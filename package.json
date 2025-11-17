@@ -1,17 +1,11 @@
 {
-  "name": "steam-card-packs",
+  "name": "olipixel-card-packs",
   "version": "1.0.0",
-  "description": "Site d'ouverture de packs de cartes avec authentification Steam",
+  "description": "Site d'ouverture de packs de cartes Steam",
   "main": "index.html",
-  "scripts": {
-    "dev": "vercel dev",
-    "deploy": "vercel --prod"
-  },
+  "scripts": {},
   "dependencies": {
     "passport": "^0.6.0",
     "passport-steam": "^1.0.17"
-  },
-  "engines": {
-    "node": ">=14"
   }
 }
