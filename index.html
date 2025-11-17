@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pack Opening - Steam Cards</title>
+    <title>OliPixel Card Packs</title>
     <style>
         * {
             margin: 0;
@@ -13,111 +13,313 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
             color: white;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .user-info {
-            background: rgba(255,255,255,0.1);
-            padding: 15px 30px;
-            border-radius: 10px;
+        /* Navigation moderne */
+        .navbar {
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
-            display: inline-block;
-            margin-top: 10px;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .pack-container {
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
             display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .pack {
-            width: 200px;
-            height: 280px;
-            background: linear-gradient(145deg, #ffd700, #ffed4e);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
         }
 
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-menu a.active {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ecdc4;
+        }
+
+        /* Bouton Steam moderne */
+        .steam-login-btn {
+            background: linear-gradient(135deg, #171a21 0%, #2a475e 100%);
+            color: white;
+            padding: 12px 28px;
+            border: 2px solid #66c0f4;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(102, 192, 244, 0.3);
+        }
+
+        .steam-login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(102, 192, 244, 0.5);
+            background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+        }
+
+        .steam-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #4ecdc4;
+        }
+
+        .user-credits {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Contenu principal */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            border-radius: 20px;
+            margin-bottom: 60px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.4em;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Section des packs */
+        .packs-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .pack-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .pack {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pack::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .pack:hover::before {
+            left: 100%;
+        }
+
         .pack:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(255,215,0,0.5);
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(78, 205, 196, 0.5);
+            box-shadow: 0 20px 60px rgba(78, 205, 196, 0.3);
+        }
+
+        .pack.basic {
+            border-image: linear-gradient(135deg, #ffd700, #ffed4e) 1;
+        }
+
+        .pack.premium {
+            border-image: linear-gradient(135deg, #a855f7, #c084fc) 1;
+        }
+
+        .pack.legendary {
+            border-image: linear-gradient(135deg, #f59e0b, #fbbf24) 1;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
         }
 
         .pack-icon {
-            font-size: 80px;
+            font-size: 100px;
             margin-bottom: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
         }
 
         .pack-name {
-            font-size: 1.3em;
+            font-size: 2em;
             font-weight: bold;
-            color: #333;
-            text-align: center;
-            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+
+        .pack-description {
+            opacity: 0.8;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
 
         .pack-price {
-            font-size: 1.1em;
-            color: #555;
-            margin-top: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 20px;
         }
 
+        .pack-btn {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pack-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(78, 205, 196, 0.4);
+        }
+
+        /* Révélation des cartes */
         .cards-reveal {
             display: none;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            padding: 40px 20px;
             animation: fadeIn 0.5s ease;
         }
 
         .cards-reveal.active {
-            display: flex;
+            display: block;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .card {
-            width: 180px;
-            height: 250px;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            padding: 20px;
+            border-radius: 15px;
+            padding: 25px;
             text-align: center;
             animation: cardFlip 0.6s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
 
         .card::before {
@@ -127,7 +329,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
             animation: shine 2s infinite;
         }
 
@@ -157,36 +359,39 @@
             background: linear-gradient(145deg, #f59e0b, #d97706);
             color: white;
             border: 3px solid #ffd700;
-            box-shadow: 0 0 30px rgba(255,215,0,0.6);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.6);
         }
 
         .card-rarity {
-            font-size: 0.8em;
+            font-size: 0.9em;
             font-weight: bold;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
         }
 
         .card-image {
-            font-size: 60px;
+            font-size: 80px;
             margin: 20px 0;
         }
 
         .card-name {
-            font-size: 1.2em;
+            font-size: 1.4em;
             font-weight: bold;
             margin-bottom: 10px;
         }
 
         .card-description {
-            font-size: 0.9em;
-            opacity: 0.8;
+            font-size: 1em;
+            opacity: 0.9;
         }
 
-        .buttons {
+        /* Boutons d'action */
+        .action-buttons {
             display: flex;
+            justify-content: center;
             gap: 20px;
-            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -197,7 +402,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-primary {
@@ -207,7 +412,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(16,185,129,0.4);
+            box-shadow: 0 7px 20px rgba(16, 185, 129, 0.4);
         }
 
         .btn-secondary {
@@ -217,79 +422,219 @@
 
         .btn-secondary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(99,102,241,0.4);
+            box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
         }
 
-        .inventory {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
+        .btn-danger {
+            background: linear-gradient(145deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        /* Inventaire */
+        .inventory-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
             backdrop-filter: blur(10px);
-            margin-top: 40px;
-            max-width: 800px;
-            width: 100%;
-        }
-
-        .inventory h2 {
-            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .inventory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .inventory-item {
-            background: rgba(255,255,255,0.2);
-            padding: 10px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
             text-align: center;
             font-size: 0.9em;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .inventory-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* Login screen */
+        .login-screen {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 60px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-card h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .login-card p {
+            font-size: 1.2em;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+
+        /* Menu hamburger pour mobile */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .pack-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🎮 Steam Card Packs</h1>
-        <div class="user-info">
-            <p>👤 Connecté via Steam | 💰 Crédits: <span id="credits">1000</span></p>
-        </div>
-    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                🎮 OliPixel Cards
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" class="active" onclick="showHome()">Accueil</a></li>
+                <li><a href="#" onclick="showPacks()">Packs</a></li>
+                <li><a href="#" onclick="showInventory()">Inventaire</a></li>
+                <li><a href="#">Boutique</a></li>
+            </ul>
 
-    <div class="pack-container" id="packContainer">
-        <div class="pack" onclick="openPack('basic')">
-            <div class="pack-icon">📦</div>
-            <div class="pack-name">Pack Basique</div>
-            <div class="pack-price">100 Crédits</div>
-        </div>
-        <div class="pack" onclick="openPack('premium')" style="background: linear-gradient(145deg, #a855f7, #c084fc);">
-            <div class="pack-icon">🎁</div>
-            <div class="pack-name">Pack Premium</div>
-            <div class="pack-price">250 Crédits</div>
-        </div>
-        <div class="pack" onclick="openPack('legendary')" style="background: linear-gradient(145deg, #f59e0b, #fbbf24);">
-            <div class="pack-icon">💎</div>
-            <div class="pack-name">Pack Légendaire</div>
-            <div class="pack-price">500 Crédits</div>
-        </div>
-    </div>
+            <div id="navAuth">
+                <button class="steam-login-btn" onclick="loginWithSteam()">
+                    <svg class="steam-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm0 2a6 6 0 0 0-6 6 6 6 0 0 0 6 6 6 6 0 0 0 6-6 6 6 0 0 0-6-6z"/>
+                    </svg>
+                    Connexion Steam
+                </button>
+            </div>
 
-    <div class="cards-reveal" id="cardsReveal"></div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-    <div class="buttons" id="buttons" style="display: none;">
-        <button class="btn btn-primary" onclick="resetPacks()">Ouvrir un autre pack</button>
-        <button class="btn btn-secondary" onclick="showInventory()">Voir mon inventaire</button>
-    </div>
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <!-- Écran de connexion -->
+        <div id="loginScreen" class="login-screen">
+            <div class="login-card">
+                <h2>🎮 Bienvenue !</h2>
+                <p>Connectez-vous avec Steam pour commencer à collectionner des cartes épiques</p>
+                <button class="steam-login-btn" onclick="loginWithSteam()">
+                    <svg class="steam-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm0 2a6 6 0 0 0-6 6 6 6 0 0 0 6 6 6 6 0 0 0 6-6 6 6 0 0 0-6-6z"/>
+                    </svg>
+                    Se connecter avec Steam
+                </button>
+            </div>
+        </div>
 
-    <div class="inventory" id="inventory" style="display: none;">
-        <h2>📋 Mon Inventaire</h2>
-        <div class="inventory-grid" id="inventoryGrid"></div>
+        <!-- Contenu du jeu (caché par défaut) -->
+        <div id="gameContent" style="display: none;">
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>✨ Ouvrez des Packs Légendaires</h1>
+                <p>Collectionnez des cartes rares et construisez votre collection ultime</p>
+            </div>
+
+            <!-- Section Packs -->
+            <section class="packs-section" id="packsSection">
+                <h2 class="section-title">🎁 Choisissez votre Pack</h2>
+                <div class="pack-container">
+                    <div class="pack basic">
+                        <div class="pack-icon">📦</div>
+                        <div class="pack-name">Pack Basique</div>
+                        <div class="pack-description">3 cartes aléatoires avec une chance de cartes rares</div>
+                        <div class="pack-price">💰 100 Crédits</div>
+                        <button class="pack-btn" onclick="openPack('basic')">Ouvrir</button>
+                    </div>
+
+                    <div class="pack premium">
+                        <div class="pack-icon">🎁</div>
+                        <div class="pack-name">Pack Premium</div>
+                        <div class="pack-description">4 cartes avec de meilleures chances de raretés élevées</div>
+                        <div class="pack-price">💰 250 Crédits</div>
+                        <button class="pack-btn" onclick="openPack('premium')">Ouvrir</button>
+                    </div>
+
+                    <div class="pack legendary">
+                        <div class="pack-icon">💎</div>
+                        <div class="pack-name">Pack Légendaire</div>
+                        <div class="pack-description">5 cartes avec garantie d'au moins une carte épique</div>
+                        <div class="pack-price">💰 500 Crédits</div>
+                        <button class="pack-btn" onclick="openPack('legendary')">Ouvrir</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Révélation des cartes -->
+            <div class="cards-reveal" id="cardsReveal">
+                <h2 class="section-title">🎉 Vos nouvelles cartes !</h2>
+                <div class="cards-grid" id="cardsGrid"></div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="resetPacks()">Ouvrir un autre pack</button>
+                    <button class="btn btn-secondary" onclick="showInventory()">Voir mon inventaire</button>
+                </div>
+            </div>
+
+            <!-- Inventaire -->
+            <section class="inventory-section" id="inventorySection" style="display: none;">
+                <h2 class="section-title">📋 Mon Inventaire</h2>
+                <div class="inventory-grid" id="inventoryGrid"></div>
+            </section>
+        </div>
     </div>
 
     <script>
         let credits = 1000;
         let inventory = [];
+        let currentUser = null;
 
         const cardDatabase = {
             basic: [
@@ -312,24 +657,82 @@
             ]
         };
 
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userData = urlParams.get('user');
+            
+            if (userData) {
+                currentUser = JSON.parse(decodeURIComponent(userData));
+                sessionStorage.setItem('steamUser', JSON.stringify(currentUser));
+                showGameContent();
+                window.history.replaceState({}, document.title, '/');
+            } else {
+                checkUserSession();
+            }
+        };
+
+        function checkUserSession() {
+            const userData = sessionStorage.getItem('steamUser');
+            if (userData) {
+                currentUser = JSON.parse(userData);
+                showGameContent();
+            }
+        }
+
+        function loginWithSteam() {
+            window.location.href = '/api/auth/steam';
+        }
+
+        function showGameContent() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('gameContent').style.display = 'block';
+            
+            const navAuth = document.getElementById('navAuth');
+            navAuth.innerHTML = `
+                <div class="user-profile" onclick="toggleUserMenu()">
+                    ${currentUser.avatar ? `<img src="${currentUser.avatar}" class="user-avatar" alt="Avatar">` : ''}
+                    <span>${currentUser.personaName}</span>
+                    <div class="user-credits">💰 ${credits}</div>
+                </div>
+            `;
+        }
+
+        function logout() {
+            sessionStorage.removeItem('steamUser');
+            currentUser = null;
+            credits = 1000;
+            inventory = [];
+            location.reload();
+        }
+
+        function showHome() {
+            document.getElementById('packsSection').style.display = 'block';
+            document.getElementById('cardsReveal').classList.remove('active');
+            document.getElementById('inventorySection').style.display = 'none';
+        }
+
+        function showPacks() {
+            showHome();
+        }
+
         function openPack(packType) {
             const costs = {basic: 100, premium: 250, legendary: 500};
             const cost = costs[packType];
 
             if (credits < cost) {
-                alert('Pas assez de crédits !');
+                alert('❌ Pas assez de crédits !');
                 return;
             }
 
             credits -= cost;
-            document.getElementById('credits').textContent = credits;
+            updateCredits();
 
             const cards = generateCards(packType);
             displayCards(cards);
             inventory.push(...cards);
 
-            document.getElementById('packContainer').style.display = 'none';
-            document.getElementById('buttons').style.display = 'flex';
+            document.getElementById('packsSection').style.display = 'none';
+            document.getElementById('cardsReveal').classList.add('active');
         }
 
         function generateCards(packType) {
@@ -368,9 +771,8 @@
         }
 
         function displayCards(cards) {
-            const container = document.getElementById('cardsReveal');
+            const container = document.getElementById('cardsGrid');
             container.innerHTML = '';
-            container.classList.add('active');
 
             cards.forEach((card, index) => {
                 setTimeout(() => {
@@ -388,25 +790,47 @@
         }
 
         function resetPacks() {
-            document.getElementById('packContainer').style.display = 'flex';
+            document.getElementById('packsSection').style.display = 'block';
             document.getElementById('cardsReveal').classList.remove('active');
-            document.getElementById('buttons').style.display = 'none';
-            document.getElementById('inventory').style.display = 'none';
+            document.getElementById('inventorySection').style.display = 'none';
         }
 
         function showInventory() {
-            const invEl = document.getElementById('inventory');
+            document.getElementById('packsSection').style.display = 'none';
+            document.getElementById('cardsReveal').classList.remove('active');
+            const invSection = document.getElementById('inventorySection');
             const gridEl = document.getElementById('inventoryGrid');
             
             gridEl.innerHTML = '';
-            inventory.forEach(card => {
-                const item = document.createElement('div');
-                item.className = 'inventory-item';
-                item.innerHTML = `${card.emoji}<br>${card.name}`;
-                gridEl.appendChild(item);
-            });
+            
+            if (inventory.length === 0) {
+                gridEl.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.7;">Votre inventaire est vide. Ouvrez des packs pour obtenir des cartes !</p>';
+            } else {
+                inventory.forEach(card => {
+                    const item = document.createElement('div');
+                    item.className = 'inventory-item';
+                    item.innerHTML = `
+                        <div style="font-size: 2em;">${card.emoji}</div>
+                        <div style="margin-top: 8px;">${card.name}</div>
+                    `;
+                    gridEl.appendChild(item);
+                });
+            }
 
-            invEl.style.display = 'block';
+            invSection.style.display = 'block';
+        }
+
+        function updateCredits() {
+            const creditsElements = document.querySelectorAll('.user-credits');
+            creditsElements.forEach(el => {
+                el.innerHTML = `💰 ${credits}`;
+            });
+        }
+
+        function toggleUserMenu() {
+            if (confirm('Voulez-vous vous déconnecter ?')) {
+                logout();
+            }
         }
     </script>
 </body>
