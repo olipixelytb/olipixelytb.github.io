@@ -162,6 +162,46 @@
             gap: 5px;
         }
 
+        /* User Menu Dropdown */
+        .user-menu {
+            position: absolute;
+            top: 70px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 250px;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .user-menu.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-menu-item {
+            padding: 12px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-menu-item:hover {
+            background: rgba(78, 205, 196, 0.2);
+        }
+
         /* Contenu principal */
         .main-content {
             margin-top: 80px;
@@ -270,6 +310,7 @@
             color: #4ecdc4;
             text-decoration: none;
             font-weight: bold;
+            cursor: pointer;
         }
 
         .auth-switch a:hover {
@@ -332,7 +373,7 @@
         }
 
         /* Section des packs */
-        .packs-section, .shop-section, .admin-section {
+        .packs-section, .shop-section, .admin-section, .collection-section {
             margin-bottom: 60px;
         }
 
@@ -424,6 +465,111 @@
             box-shadow: 0 5px 20px rgba(78, 205, 196, 0.4);
         }
 
+        /* Collection de cartes */
+        .collection-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            border-color: #4ecdc4;
+        }
+
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .collection-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .collection-card.owned {
+            background: linear-gradient(145deg, rgba(78, 205, 196, 0.2), rgba(78, 205, 196, 0.1));
+            border-color: #4ecdc4;
+        }
+
+        .collection-card.locked {
+            opacity: 0.5;
+            filter: grayscale(80%);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .badge-owned {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .badge-locked {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .collection-card-emoji {
+            font-size: 60px;
+            margin: 15px 0;
+        }
+
+        .collection-card-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .collection-card-rarity {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .collection-card-count {
+            font-size: 0.9em;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
         /* Panneau Admin */
         .admin-panel {
             background: rgba(245, 158, 11, 0.1);
@@ -500,6 +646,34 @@
 
         .btn-small:hover {
             transform: translateY(-2px);
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+        }
+
+        .toast.success {
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         /* Révélation des cartes */
@@ -696,6 +870,7 @@
             <ul class="nav-menu" id="navMenu">
                 <li><a class="active" onclick="showHome()">Accueil</a></li>
                 <li><a onclick="showPacks()">Packs</a></li>
+                <li><a onclick="showCollection()">Collection</a></li>
                 <li><a onclick="showShop()">Boutique</a></li>
                 <li><a onclick="showInventory()">Inventaire</a></li>
                 <li id="adminMenuLink" style="display: none;"><a onclick="showAdmin()">Admin 👑</a></li>
@@ -709,6 +884,19 @@
             </div>
         </div>
     </nav>
+
+    <!-- User Menu Dropdown -->
+    <div class="user-menu" id="userMenu">
+        <div class="user-menu-item" onclick="showProfile()">
+            👤 Mon Profil
+        </div>
+        <div class="user-menu-item" id="adminMenuOption" style="display: none;" onclick="showAdmin(); hideUserMenu();">
+            👑 Panneau Admin
+        </div>
+        <div class="user-menu-item" onclick="logout()">
+            🚪 Déconnexion
+        </div>
+    </div>
 
     <!-- Contenu principal -->
     <div class="main-content">
@@ -816,6 +1004,23 @@
                 </div>
             </section>
 
+            <!-- Section Collection -->
+            <section class="collection-section" id="collectionSection" style="display: none;">
+                <h2 class="section-title">🎴 Ma Collection</h2>
+                
+                <div class="collection-filters">
+                    <button class="filter-btn active" onclick="filterCollection('all')">Toutes</button>
+                    <button class="filter-btn" onclick="filterCollection('common')">Communes</button>
+                    <button class="filter-btn" onclick="filterCollection('rare')">Rares</button>
+                    <button class="filter-btn" onclick="filterCollection('epic')">Épiques</button>
+                    <button class="filter-btn" onclick="filterCollection('legendary')">Légendaires</button>
+                    <button class="filter-btn" onclick="filterCollection('owned')">Possédées</button>
+                    <button class="filter-btn" onclick="filterCollection('missing')">Manquantes</button>
+                </div>
+
+                <div class="collection-grid" id="collectionGrid"></div>
+            </section>
+
             <!-- Section Boutique -->
             <section class="shop-section" id="shopSection" style="display: none;">
                 <h2 class="section-title">🛒 Boutique de Crédits</h2>
@@ -907,6 +1112,7 @@
         let users = {};
         let credits = 1000;
         let inventory = [];
+        let currentFilter = 'all';
 
         const cardDatabase = {
             basic: [
@@ -929,10 +1135,24 @@
             ]
         };
 
+        // Obtenir toutes les cartes disponibles
+        function getAllCards() {
+            return [...cardDatabase.basic, ...cardDatabase.rare, ...cardDatabase.epic, ...cardDatabase.legendary];
+        }
+
         // Charger les données au démarrage
         window.onload = function() {
             loadData();
             checkSession();
+            
+            // Fermer le menu utilisateur si on clique ailleurs
+            document.addEventListener('click', function(e) {
+                const userMenu = document.getElementById('userMenu');
+                const userProfile = document.querySelector('.user-profile');
+                if (userMenu && userProfile && !userMenu.contains(e.target) && !userProfile.contains(e.target)) {
+                    userMenu.classList.remove('show');
+                }
+            });
         };
 
         function loadData() {
@@ -961,6 +1181,17 @@
 
         function isAdmin() {
             return currentUser && currentUser.email === ADMIN_EMAIL;
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
         }
 
         function showRegister() {
@@ -1070,7 +1301,7 @@
             const adminBadge = isAdmin() ? '<span class="admin-badge">ADMIN</span>' : '';
             
             navAuth.innerHTML = `
-                <div class="user-profile" onclick="toggleUserMenu()">
+                <div class="user-profile" onclick="toggleUserMenu(event)">
                     <div class="${avatarClass}">${initial}</div>
                     <span>${currentUser.username}${adminBadge}</span>
                     <div class="user-credits">💰 ${credits}</div>
@@ -1080,10 +1311,32 @@
             // Afficher le menu admin si admin
             if (isAdmin()) {
                 document.getElementById('adminMenuLink').style.display = 'block';
+                document.getElementById('adminMenuOption').style.display = 'block';
             }
         }
 
+        function toggleUserMenu(event) {
+            event.stopPropagation();
+            const userMenu = document.getElementById('userMenu');
+            userMenu.classList.toggle('show');
+        }
+
+        function hideUserMenu() {
+            document.getElementById('userMenu').classList.remove('show');
+        }
+
+        function showProfile() {
+            hideUserMenu();
+            const totalCards = inventory.length;
+            const uniqueCards = [...new Set(inventory.map(c => c.name))].length;
+            const allCards = getAllCards().length;
+            const completion = Math.round((uniqueCards / allCards) * 100);
+            
+            showToast(`👤 ${currentUser.username}\n📧 ${currentUser.email}\n💰 ${credits} crédits\n🎴 ${totalCards} cartes (${uniqueCards}/${allCards})\n📊 Collection: ${completion}%\n📅 Membre depuis ${new Date(currentUser.createdAt).toLocaleDateString()}`, 'success');
+        }
+
         function logout() {
+            hideUserMenu();
             sessionStorage.removeItem('currentUser');
             currentUser = null;
             credits = 1000;
@@ -1103,10 +1356,17 @@
             updateActiveMenu(1);
         }
 
+        function showCollection() {
+            hideAllSections();
+            document.getElementById('collectionSection').style.display = 'block';
+            updateActiveMenu(2);
+            loadCollection();
+        }
+
         function showShop() {
             hideAllSections();
             document.getElementById('shopSection').style.display = 'block';
-            updateActiveMenu(2);
+            updateActiveMenu(3);
         }
 
         function showInventory() {
@@ -1131,23 +1391,24 @@
             }
 
             invSection.style.display = 'block';
-            updateActiveMenu(3);
+            updateActiveMenu(4);
         }
 
         function showAdmin() {
             if (!isAdmin()) {
-                alert('❌ Accès refusé');
+                showToast('❌ Accès refusé', 'error');
                 return;
             }
             
             hideAllSections();
             document.getElementById('adminSection').style.display = 'block';
-            updateActiveMenu(4);
+            updateActiveMenu(5);
             loadAdminData();
         }
 
         function hideAllSections() {
             document.getElementById('packsSection').style.display = 'none';
+            document.getElementById('collectionSection').style.display = 'none';
             document.getElementById('shopSection').style.display = 'none';
             document.getElementById('inventorySection').style.display = 'none';
             document.getElementById('adminSection').style.display = 'none';
@@ -1166,15 +1427,11 @@
         }
 
         function buyCredits(amount, price) {
-            const confirm = window.confirm(`Acheter ${amount} crédits pour ${price}€ ?\n\n(Ceci est une simulation, aucun paiement réel n'est effectué)`);
-            
-            if (confirm) {
-                credits += amount;
-                users[currentUser.email].credits = credits;
-                saveData();
-                updateCredits();
-                alert(`✅ ${amount} crédits ajoutés à votre compte !`);
-            }
+            credits += amount;
+            users[currentUser.email].credits = credits;
+            saveData();
+            updateCredits();
+            showToast(`✅ ${amount} crédits ajoutés à votre compte !`, 'success');
         }
 
         function openPack(packType) {
@@ -1182,7 +1439,7 @@
             const cost = costs[packType];
 
             if (credits < cost) {
-                alert('❌ Pas assez de crédits !');
+                showToast('❌ Pas assez de crédits !', 'error');
                 return;
             }
 
@@ -1267,22 +1524,53 @@
             });
         }
 
-        function toggleUserMenu() {
-            const options = isAdmin() 
-                ? ['Voir le profil', 'Panneau Admin', 'Déconnexion']
-                : ['Voir le profil', 'Déconnexion'];
+        // FONCTIONS COLLECTION
+        function loadCollection() {
+            const allCards = getAllCards();
+            const grid = document.getElementById('collectionGrid');
+            grid.innerHTML = '';
             
-            const choice = prompt(`Menu:\n1. ${options[0]}\n2. ${options[1]}${isAdmin() ? '\n3. ' + options[2] : ''}\n\nChoisissez une option (1-${options.length}):`);
+            // Compter les occurrences de chaque carte
+            const cardCounts = {};
+            inventory.forEach(card => {
+                cardCounts[card.name] = (cardCounts[card.name] || 0) + 1;
+            });
             
-            if (choice === '1') {
-                alert(`👤 Profil de ${currentUser.username}\n\n📧 Email: ${currentUser.email}\n💰 Crédits: ${credits}\n🎴 Cartes: ${inventory.length}\n📅 Membre depuis: ${new Date(currentUser.createdAt).toLocaleDateString()}`);
-            } else if (choice === '2' && !isAdmin()) {
-                logout();
-            } else if (choice === '2' && isAdmin()) {
-                showAdmin();
-            } else if (choice === '3' && isAdmin()) {
-                logout();
-            }
+            allCards.forEach(card => {
+                const count = cardCounts[card.name] || 0;
+                const owned = count > 0;
+                
+                // Appliquer le filtre
+                if (currentFilter !== 'all') {
+                    if (currentFilter === 'owned' && !owned) return;
+                    if (currentFilter === 'missing' && owned) return;
+                    if (currentFilter !== 'owned' && currentFilter !== 'missing' && card.rarity !== currentFilter) return;
+                }
+                
+                const cardEl = document.createElement('div');
+                cardEl.className = `collection-card ${owned ? 'owned' : 'locked'}`;
+                cardEl.innerHTML = `
+                    <div class="card-badge ${owned ? 'badge-owned' : 'badge-locked'}">
+                        ${owned ? `✓ x${count}` : '🔒'}
+                    </div>
+                    <div class="collection-card-emoji">${card.emoji}</div>
+                    <div class="collection-card-name">${card.name}</div>
+                    <div class="collection-card-rarity">${card.rarity}</div>
+                    ${owned ? `<div class="collection-card-count">Possédée x${count}</div>` : '<div class="collection-card-count" style="opacity:0.5;">Non obtenue</div>'}
+                `;
+                grid.appendChild(cardEl);
+            });
+        }
+
+        function filterCollection(filter) {
+            currentFilter = filter;
+            
+            // Mettre à jour les boutons actifs
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            loadCollection();
         }
 
         // FONCTIONS ADMIN
@@ -1323,7 +1611,7 @@
                 <p style="margin: 10px 0; font-size: 1.1em;">👥 Utilisateurs: <strong>${totalUsers}</strong></p>
                 <p style="margin: 10px 0; font-size: 1.1em;">💰 Crédits totaux: <strong>${totalCredits}</strong></p>
                 <p style="margin: 10px 0; font-size: 1.1em;">🎴 Cartes totales: <strong>${totalCards}</strong></p>
-                <p style="margin: 10px 0; font-size: 1.1em;">📊 Moyenne crédits/user: <strong>${Math.round(totalCredits / totalUsers)}</strong></p>
+                <p style="margin: 10px 0; font-size: 1.1em;">📊 Moyenne crédits/user: <strong>${Math.round(totalCredits / totalUsers) || 0}</strong></p>
             `;
         }
 
@@ -1334,14 +1622,14 @@
             const amount = parseInt(document.getElementById('adminCreditsAmount').value);
             
             if (!users[email]) {
-                alert('❌ Utilisateur non trouvé');
+                showToast('❌ Utilisateur non trouvé', 'error');
                 return;
             }
             
             users[email].credits += amount;
             saveData();
             
-            alert(`✅ ${amount} crédits ajoutés à ${users[email].username}`);
+            showToast(`✅ ${amount} crédits ajoutés à ${users[email].username}`, 'success');
             
             document.getElementById('adminUserEmail').value = '';
             document.getElementById('adminCreditsAmount').value = '';
@@ -1355,7 +1643,7 @@
             users[email].credits += amount;
             saveData();
             
-            alert(`✅ ${amount} crédits ajoutés à ${users[email].username}`);
+            showToast(`✅ ${amount} crédits ajoutés à ${users[email].username}`, 'success');
             loadAdminData();
             
             // Mettre à jour si c'est l'utilisateur actuel
@@ -1371,7 +1659,7 @@
             users[email].credits = Math.max(0, users[email].credits - amount);
             saveData();
             
-            alert(`✅ ${amount} crédits retirés à ${users[email].username}`);
+            showToast(`✅ ${amount} crédits retirés à ${users[email].username}`, 'success');
             loadAdminData();
             
             if (currentUser && currentUser.email === email) {
