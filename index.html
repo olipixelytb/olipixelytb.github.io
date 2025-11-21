@@ -263,6 +263,51 @@
         }
         .cards-reveal { display: none; padding: 40px 20px; }
         .cards-reveal.active { display: block; }
+        .pack-opening {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+        .pack-opening.active { display: flex; }
+        .pack-animation {
+            text-align: center;
+            animation: bounce 1s ease infinite;
+        }
+        .pack-opening-icon {
+            font-size: 200px;
+            animation: rotate 2s linear infinite;
+            filter: drop-shadow(0 0 50px rgba(78, 205, 196, 0.5));
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            to { transform: rotate(360deg) scale(1); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .card-reveal-animation {
+            animation: cardFlip 0.6s ease forwards;
+            transform-style: preserve-3d;
+        }
+        @keyframes cardFlip {
+            0% { transform: rotateY(0deg) scale(0.5); opacity: 0; }
+            50% { transform: rotateY(90deg) scale(0.8); }
+            100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+        }
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -434,6 +479,13 @@
         </div>
 
         <div id="gameContent" style="display: none;">
+            <div class="pack-opening" id="packOpening">
+                <div class="pack-animation">
+                    <div class="pack-opening-icon" id="packOpeningIcon">📦</div>
+                    <h2 style="font-size: 2em; margin-top: 20px;">Ouverture du pack...</h2>
+                </div>
+            </div>
+
             <section id="packsSection">
                 <h2 class="section-title">🎁 Packs de Cartes Manga</h2>
                 <div class="pack-container">
@@ -586,39 +638,115 @@
 
         const cardDatabase = {
             basic: [
-                {name: 'Konohamaru', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/0/03/Konohamaru_Parte_III.png', description: 'Ninja en formation', anime: 'Naruto'},
-                {name: 'Sakura', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/2/27/Sakura_Part_III.png', description: 'Kunoichi médecin', anime: 'Naruto'},
-                {name: 'Hinata', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/c/c3/Hinata_Part_III.png', description: 'Héritière Hyuga', anime: 'Naruto'},
-                {name: 'Shikamaru', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/a/a8/Shikamaru_Part_III.png', description: 'Stratège paresseux', anime: 'Naruto'},
-                {name: 'Choji', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/8/87/Ch%C5%8Dji_Part_III.png', description: 'Ninja gourmand', anime: 'Naruto'},
-                {name: 'Ino', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/5/54/Ino_Part_III.png', description: 'Spécialiste du mental', anime: 'Naruto'},
-                {name: 'Kiba', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/e/e3/Kiba_Part_III.png', description: 'Dresseur de chiens', anime: 'Naruto'},
-                {name: 'Tenten', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/d/d4/Tenten_Part_III.png', description: 'Maître des armes', anime: 'Naruto'},
-                {name: 'Tanjiro', rarity: 'basic', img: 'https://i.imgur.com/2X3Z4Y5.jpg', description: 'Pourfendeur de démons', anime: 'Demon Slayer'},
-                {name: 'Nezuko', rarity: 'basic', img: 'https://i.imgur.com/3Y4Z5A6.jpg', description: 'Démon protectrice', anime: 'Demon Slayer'},
-                {name: 'Murata', rarity: 'basic', img: 'https://i.imgur.com/4Z5A6B7.jpg', description: 'Pourfendeur ordinaire', anime: 'Demon Slayer'},
-                {name: 'Goto', rarity: 'basic', img: 'https://i.imgur.com/5A6B7C8.jpg', description: 'Assistant dévoué', anime: 'Demon Slayer'},
-                {name: 'Usopp', rarity: 'basic', img: 'https://i.imgur.com/6B7C8D9.jpg', description: 'Tireur d\'élite', anime: 'One Piece'},
-                {name: 'Nami', rarity: 'basic', img: 'https://i.imgur.com/7C8D9E0.jpg', description: 'Navigatrice', anime: 'One Piece'},
-                {name: 'Chopper', rarity: 'basic', img: 'https://i.imgur.com/8D9E0F1.jpg', description: 'Médecin renne', anime: 'One Piece'},
-                {name: 'Brook', rarity: 'basic', img: 'https://i.imgur.com/9E0F1G2.jpg', description: 'Musicien squelette', anime: 'One Piece'},
-                {name: 'Carrot', rarity: 'basic', img: 'https://i.imgur.com/0F1G2H3.jpg', description: 'Guerrière Mink', anime: 'One Piece'},
-                {name: 'Conny', rarity: 'basic', img: 'https://i.imgur.com/1G2H3I4.jpg', description: 'Enfant courageux', anime: 'Attack on Titan'},
-                {name: 'Armin', rarity: 'basic', img: 'https://i.imgur.com/2H3I4J5.jpg', description: 'Stratège brillant', anime: 'Attack on Titan'},
-                {name: 'Sasha', rarity: 'basic', img: 'https://i.imgur.com/3I4J5K6.jpg', description: 'Chasseuse affamée', anime: 'Attack on Titan'},
-                {name: 'Historia', rarity: 'basic', img: 'https://i.imgur.com/4J5K6L7.jpg', description: 'Reine courageuse', anime: 'Attack on Titan'},
-                {name: 'Krillin', rarity: 'basic', img: 'https://i.imgur.com/5K6L7M8.jpg', description: 'Meilleur ami', anime: 'Dragon Ball'},
-                {name: 'Gohan', rarity: 'basic', img: 'https://i.imgur.com/6L7M8N9.jpg', description: 'Demi-Saiyan', anime: 'Dragon Ball'},
-                {name: 'Yamcha', rarity: 'basic', img: 'https://i.imgur.com/7M8N9O0.jpg', description: 'Guerrier du désert', anime: 'Dragon Ball'},
-                {name: 'Tenshinhan', rarity: 'basic', img: 'https://i.imgur.com/8N9O0P1.jpg', description: 'Maître du Kikoho', anime: 'Dragon Ball'},
-                {name: 'Bulma', rarity: 'basic', img: 'https://i.imgur.com/9O0P1Q2.jpg', description: 'Génie scientifique', anime: 'Dragon Ball'},
-                {name: 'Denki', rarity: 'basic', img: 'https://i.imgur.com/0P1Q2R3.jpg', description: 'Héros électrique', anime: 'My Hero Academia'},
-                {name: 'Mina', rarity: 'basic', img: 'https://i.imgur.com/1Q2R3S4.jpg', description: 'Héroïne acide', anime: 'My Hero Academia'},
-                {name: 'Mineta', rarity: 'basic', img: 'https://i.imgur.com/2R3S4T5.jpg', description: 'Petit pervers', anime: 'My Hero Academia'},
-                {name: 'Sero', rarity: 'basic', img: 'https://i.imgur.com/3S4T5U6.jpg', description: 'Héros ruban', anime: 'My Hero Academia'},
+                {name: 'Konohamaru', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/0/03/Konohamaru_Parte_III.png/revision/latest?cb=20170621193101&path-prefix=es', description: 'Ninja en formation', anime: 'Naruto'},
+                {name: 'Sakura', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/2/27/Sakura_Part_III.png/revision/latest?cb=20160114203717', description: 'Kunoichi médecin', anime: 'Naruto'},
+                {name: 'Hinata', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/c/c3/Hinata_Part_III.png/revision/latest?cb=20160114203639', description: 'Héritière Hyuga', anime: 'Naruto'},
+                {name: 'Shikamaru', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/a/a8/Shikamaru_Part_III.png/revision/latest?cb=20160114203630', description: 'Stratège paresseux', anime: 'Naruto'},
+                {name: 'Choji', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/8/87/Ch%C5%8Dji_Part_III.png/revision/latest?cb=20160114203722', description: 'Ninja gourmand', anime: 'Naruto'},
+                {name: 'Ino', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/5/54/Ino_Part_III.png/revision/latest?cb=20160114203713', description: 'Spécialiste du mental', anime: 'Naruto'},
+                {name: 'Kiba', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/e/e3/Kiba_Part_III.png/revision/latest?cb=20160114203708', description: 'Dresseur de chiens', anime: 'Naruto'},
+                {name: 'Tenten', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/d/d4/Tenten_Part_III.png/revision/latest?cb=20160114203703', description: 'Maître des armes', anime: 'Naruto'},
+                {name: 'Tanjiro', rarity: 'basic', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/9/91/Tanjiro_Kamado_Anime.png/revision/latest?cb=20190413182259', description: 'Pourfendeur de démons', anime: 'Demon Slayer'},
+                {name: 'Nezuko', rarity: 'basic', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/a/a4/Nezuko_anime_design.png/revision/latest?cb=20190413182302', description: 'Démon protectrice', anime: 'Demon Slayer'},
+                {name: 'Murata', rarity: 'basic', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/5/5f/Murata_anime.png/revision/latest?cb=20190802043536', description: 'Pourfendeur ordinaire', anime: 'Demon Slayer'},
+                {name: 'Goto', rarity: 'basic', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/8/8d/Goto_anime.png/revision/latest?cb=20190802043538', description: 'Assistant dévoué', anime: 'Demon Slayer'},
+                {name: 'Usopp', rarity: 'basic', img: 'https://static.wikia.nocookie.net/onepiece/images/c/c3/Usopp_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191607', description: 'Tireur d\'élite', anime: 'One Piece'},
+                {name: 'Nami', rarity: 'basic', img: 'https://static.wikia.nocookie.net/onepiece/images/8/8e/Nami_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191556', description: 'Navigatrice', anime: 'One Piece'},
+                {name: 'Chopper', rarity: 'basic', img: 'https://static.wikia.nocookie.net/onepiece/images/b/bd/Tony_Tony_Chopper_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191615', description: 'Médecin renne', anime: 'One Piece'},
+                {name: 'Brook', rarity: 'basic', img: 'https://static.wikia.nocookie.net/onepiece/images/f/f3/Brook_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191620', description: 'Musicien squelette', anime: 'One Piece'},
+                {name: 'Carrot', rarity: 'basic', img: 'https://static.wikia.nocookie.net/onepiece/images/e/eb/Carrot_Anime_Infobox.png/revision/latest?cb=20200508004642', description: 'Guerrière Mink', anime: 'One Piece'},
+                {name: 'Conny', rarity: 'basic', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/7/7e/Connie_Springer_%28Anime%29_character_image.png/revision/latest?cb=20210117143406', description: 'Enfant courageux', anime: 'Attack on Titan'},
+                {name: 'Armin', rarity: 'basic', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/1/12/Armin_Arlert_%28Anime%29_character_image.png/revision/latest?cb=20210117143404', description: 'Stratège brillant', anime: 'Attack on Titan'},
+                {name: 'Sasha', rarity: 'basic', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/2/24/Sasha_Blouse_%28Anime%29_character_image.png/revision/latest?cb=20210117143407', description: 'Chasseuse affamée', anime: 'Attack on Titan'},
+                {name: 'Historia', rarity: 'basic', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/f/f6/Historia_Reiss_%28Anime%29_character_image_%28850%29.png/revision/latest?cb=20210117143405', description: 'Reine courageuse', anime: 'Attack on Titan'},
+                {name: 'Krillin', rarity: 'basic', img: 'https://static.wikia.nocookie.net/dragonball/images/6/6f/KrillinNVKai.png/revision/latest?cb=20110925224334', description: 'Meilleur ami', anime: 'Dragon Ball'},
+                {name: 'Gohan', rarity: 'basic', img: 'https://static.wikia.nocookie.net/dragonball/images/8/83/Gohan_DBS.png/revision/latest?cb=20170504074915', description: 'Demi-Saiyan', anime: 'Dragon Ball'},
+                {name: 'Yamcha', rarity: 'basic', img: 'https://static.wikia.nocookie.net/dragonball/images/e/e7/YamchaDBSuperProfile.png/revision/latest?cb=20170316060338', description: 'Guerrier du désert', anime: 'Dragon Ball'},
+                {name: 'Tenshinhan', rarity: 'basic', img: 'https://static.wikia.nocookie.net/dragonball/images/4/49/TienShinhanDBSuperProfile.png/revision/latest?cb=20170316054936', description: 'Maître du Kikoho', anime: 'Dragon Ball'},
+                {name: 'Bulma', rarity: 'basic', img: 'https://static.wikia.nocookie.net/dragonball/images/7/70/BulmaToei.png/revision/latest?cb=20151029215604', description: 'Génie scientifique', anime: 'Dragon Ball'},
+                {name: 'Denki', rarity: 'basic', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/6/67/Denki_Kaminari_Anime_Profile.png/revision/latest?cb=20210508065053', description: 'Héros électrique', anime: 'My Hero Academia'},
+                {name: 'Mina', rarity: 'basic', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/4/4c/Mina_Ashido_Anime_Profile.png/revision/latest?cb=20210508065055', description: 'Héroïne acide', anime: 'My Hero Academia'},
+                {name: 'Mineta', rarity: 'basic', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/8/8f/Minoru_Mineta_Anime_Profile.png/revision/latest?cb=20210508065056', description: 'Petit pervers', anime: 'My Hero Academia'},
+                {name: 'Sero', rarity: 'basic', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/0/04/Hanta_Sero_Anime_Profile.png/revision/latest?cb=20210508065054', description: 'Héros ruban', anime: 'My Hero Academia'},
             ],
             rare: [
-                {name: 'Kakashi', rarity: 'rare', img: 'https://i.imgur.com/4T5U6V7.jpg', description: 'Ninja copieur', anime: 'Naruto'},
+                {name: 'Kakashi', rarity: 'rare', img: 'https://static.wikia.nocookie.net/naruto/images/7/76/Kakashi_Hatake.png/revision/latest?cb=20170628120149', description: 'Ninja copieur', anime: 'Naruto'},
+                {name: 'Sasuke', rarity: 'rare', img: 'https://static.wikia.nocookie.net/naruto/images/2/21/Sasuke_Part_III.png/revision/latest?cb=20160114203635', description: 'Vengeur Uchiha', anime: 'Naruto'},
+                {name: 'Gaara', rarity: 'rare', img: 'https://static.wikia.nocookie.net/naruto/images/0/0f/Gaara_Part_III.png/revision/latest?cb=20160114203645', description: 'Kazekage du sable', anime: 'Naruto'},
+                {name: 'Rock Lee', rarity: 'rare', img: 'https://static.wikia.nocookie.net/naruto/images/7/7d/Rock_Lee_Part_III.png/revision/latest?cb=20160114203733', description: 'Maître du taijutsu', anime: 'Naruto'},
+                {name: 'Neji', rarity: 'rare', img: 'https://static.wikia.nocookie.net/naruto/images/7/71/Neji_Part_II.png/revision/latest?cb=20160114183821', description: 'Génie Hyuga', anime: 'Naruto'},
+                {name: 'Tsunade', rarity: 'rare', img: 'https://static.wikia.nocookie.net/naruto/images/b/b3/Tsunade_infobox2.png/revision/latest?cb=20160115091933', description: 'Cinquième Hokage', anime: 'Naruto'},
+                {name: 'Zenitsu', rarity: 'rare', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/7/7a/Zenitsu_Agatsuma_Anime.png/revision/latest?cb=20190413182300', description: 'Maître de la foudre', anime: 'Demon Slayer'},
+                {name: 'Inosuke', rarity: 'rare', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/f/f6/Inosuke_anime_design.png/revision/latest?cb=20190413182301', description: 'Sanglier sauvage', anime: 'Demon Slayer'},
+                {name: 'Kanao', rarity: 'rare', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/2/2a/Kanao_anime_design.png/revision/latest?cb=20190802043522', description: 'Apprentie silencieuse', anime: 'Demon Slayer'},
+                {name: 'Shinobu', rarity: 'rare', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/1/17/Shinobu_anime_design.png/revision/latest?cb=20190802043525', description: 'Pilier de l\'insecte', anime: 'Demon Slayer'},
+                {name: 'Zoro', rarity: 'rare', img: 'https://static.wikia.nocookie.net/onepiece/images/d/d5/Roronoa_Zoro_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191553', description: 'Trois sabres', anime: 'One Piece'},
+                {name: 'Sanji', rarity: 'rare', img: 'https://static.wikia.nocookie.net/onepiece/images/9/95/Vinsmoke_Sanji_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191558', description: 'Cuisinier élégant', anime: 'One Piece'},
+                {name: 'Franky', rarity: 'rare', img: 'https://static.wikia.nocookie.net/onepiece/images/c/cc/Franky_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191619', description: 'Charpentier cyborg', anime: 'One Piece'},
+                {name: 'Robin', rarity: 'rare', img: 'https://static.wikia.nocookie.net/onepiece/images/5/5a/Nico_Robin_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191554', description: 'Archéologue mystérieuse', anime: 'One Piece'},
+                {name: 'Jinbe', rarity: 'rare', img: 'https://static.wikia.nocookie.net/onepiece/images/6/64/Jinbe_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191625', description: 'Maître du karaté', anime: 'One Piece'},
+                {name: 'Mikasa', rarity: 'rare', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/1/19/Mikasa_Ackerman_%28Anime%29_character_image.png/revision/latest?cb=20210117143406', description: 'Soldat d\'élite', anime: 'Attack on Titan'},
+                {name: 'Jean', rarity: 'rare', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/e/ea/Jean_Kirstein_%28Anime%29_character_image.png/revision/latest?cb=20210117143405', description: 'Chef d\'escouade', anime: 'Attack on Titan'},
+                {name: 'Reiner', rarity: 'rare', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/d/d4/Reiner_Braun_%28Anime%29_character_image.png/revision/latest?cb=20210117143407', description: 'Titan cuirassé', anime: 'Attack on Titan'},
+                {name: 'Annie', rarity: 'rare', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/0/0f/Annie_Leonhart_%28Anime%29_character_image.png/revision/latest?cb=20210117143404', description: 'Titan féminin', anime: 'Attack on Titan'},
+                {name: 'Piccolo', rarity: 'rare', img: 'https://static.wikia.nocookie.net/dragonball/images/f/fb/PiccoloToeiProfile.png/revision/latest?cb=20110818004727', description: 'Guerrier Namek', anime: 'Dragon Ball'},
+                {name: 'Trunks', rarity: 'rare', img: 'https://static.wikia.nocookie.net/dragonball/images/b/bc/FutureTrunksDBS.png/revision/latest?cb=20170316065044', description: 'Voyageur du futur', anime: 'Dragon Ball'},
+                {name: 'Android 18', rarity: 'rare', img: 'https://static.wikia.nocookie.net/dragonball/images/3/36/Android18DBSuper.png/revision/latest?cb=20170507232013', description: 'Cyborg puissante', anime: 'Dragon Ball'},
+                {name: 'Majin Buu', rarity: 'rare', img: 'https://static.wikia.nocookie.net/dragonball/images/e/e9/GoodBuuDBS.png/revision/latest?cb=20170507231737', description: 'Créature magique', anime: 'Dragon Ball'},
+                {name: 'Todoroki', rarity: 'rare', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/4/43/Shoto_Todoroki_Anime_Profile.png/revision/latest?cb=20210508065058', description: 'Feu et glace', anime: 'My Hero Academia'},
+                {name: 'Bakugo', rarity: 'rare', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/b/b9/Katsuki_Bakugo_Anime_Profile.png/revision/latest?cb=20210508065052', description: 'Explosif intense', anime: 'My Hero Academia'},
+                {name: 'Ochaco', rarity: 'rare', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/b/b9/Ochaco_Uraraka_Anime_Profile.png/revision/latest?cb=20210508065057', description: 'Héroïne gravité', anime: 'My Hero Academia'},
+                {name: 'Iida', rarity: 'rare', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/7/7c/Tenya_Ida_Anime_Profile.png/revision/latest?cb=20210508065051', description: 'Héros rapide', anime: 'My Hero Academia'},
+            ],
+            epic: [
+                {name: 'Itachi', rarity: 'epic', img: 'https://static.wikia.nocookie.net/naruto/images/b/bb/Itachi.png/revision/latest?cb=20160125113546', description: 'Génie Uchiha', anime: 'Naruto'},
+                {name: 'Jiraiya', rarity: 'epic', img: 'https://static.wikia.nocookie.net/naruto/images/2/21/Profile_Jiraiya.PNG/revision/latest?cb=20160115113848', description: 'Ermite légendaire', anime: 'Naruto'},
+                {name: 'Minato', rarity: 'epic', img: 'https://static.wikia.nocookie.net/naruto/images/7/77/Minato_Namikaze.png/revision/latest?cb=20160114203650', description: 'Éclair jaune', anime: 'Naruto'},
+                {name: 'Orochimaru', rarity: 'epic', img: 'https://static.wikia.nocookie.net/naruto/images/f/fd/Orochimaru_Infobox.png/revision/latest?cb=20160121033514', description: 'Serpent légendaire', anime: 'Naruto'},
+                {name: 'Giyu', rarity: 'epic', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/5/59/Giyu_anime_design.png/revision/latest?cb=20190802043524', description: 'Pilier de l\'eau', anime: 'Demon Slayer'},
+                {name: 'Rengoku', rarity: 'epic', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/6/67/Kyojuro_anime_design.png/revision/latest?cb=20190802043523', description: 'Pilier de la flamme', anime: 'Demon Slayer'},
+                {name: 'Tengen', rarity: 'epic', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/8/89/Tengen_Uzui_Anime.png/revision/latest?cb=20211227072850', description: 'Pilier du son', anime: 'Demon Slayer'},
+                {name: 'Akaza', rarity: 'epic', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/9/9f/Akaza_anime_design.png/revision/latest?cb=20201012154840', description: 'Lune supérieure', anime: 'Demon Slayer'},
+                {name: 'Luffy', rarity: 'epic', img: 'https://static.wikia.nocookie.net/onepiece/images/6/6d/Monkey_D._Luffy_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191552', description: 'Futur roi des pirates', anime: 'One Piece'},
+                {name: 'Ace', rarity: 'epic', img: 'https://static.wikia.nocookie.net/onepiece/images/b/bb/Portgas_D._Ace_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191702', description: 'Poing ardent', anime: 'One Piece'},
+                {name: 'Law', rarity: 'epic', img: 'https://static.wikia.nocookie.net/onepiece/images/b/b6/Trafalgar_D._Water_Law_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191700', description: 'Chirurgien de la mort', anime: 'One Piece'},
+                {name: 'Sabo', rarity: 'epic', img: 'https://static.wikia.nocookie.net/onepiece/images/f/f9/Sabo_Anime_Post_Timeskip_Infobox.png/revision/latest?cb=20200429191703', description: 'Chef d\'état-major', anime: 'One Piece'},
+                {name: 'Levi', rarity: 'epic', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/e/e4/Levi_Ackerman_%28Anime%29_character_image.png/revision/latest?cb=20210117143405', description: 'Plus fort humain', anime: 'Attack on Titan'},
+                {name: 'Erwin', rarity: 'epic', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/0/0d/Erwin_Smith_%28Anime%29_character_image.png/revision/latest?cb=20210117143404', description: 'Commandant visionnaire', anime: 'Attack on Titan'},
+                {name: 'Zeke', rarity: 'epic', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/3/33/Zeke_Yeager_%28Anime%29_character_image_%28850%29.png/revision/latest?cb=20210117143408', description: 'Titan bestial', anime: 'Attack on Titan'},
+                {name: 'Kenny', rarity: 'epic', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/9/97/Kenny_Ackerman_%28Anime%29_character_image.png/revision/latest?cb=20210117143405', description: 'L\'éventreur', anime: 'Attack on Titan'},
+                {name: 'Vegeta', rarity: 'epic', img: 'https://static.wikia.nocookie.net/dragonball/images/8/8b/Vegeta_DBS.png/revision/latest?cb=20170507231809', description: 'Prince des Saiyans', anime: 'Dragon Ball'},
+                {name: 'Broly', rarity: 'epic', img: 'https://static.wikia.nocookie.net/dragonball/images/f/fb/Broly_DBS.png/revision/latest?cb=20181214120609', description: 'Saiyan légendaire', anime: 'Dragon Ball'},
+                {name: 'Frieza', rarity: 'epic', img: 'https://static.wikia.nocookie.net/dragonball/images/0/0c/FriezaGoldenNV.png/revision/latest?cb=20150419051501', description: 'Empereur galactique', anime: 'Dragon Ball'},
+                {name: 'Cell', rarity: 'epic', img: 'https://static.wikia.nocookie.net/dragonball/images/d/d5/CellToei.png/revision/latest?cb=20110825213401', description: 'Forme parfaite', anime: 'Dragon Ball'},
+                {name: 'All Might', rarity: 'epic', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/f/f6/All_Might_Anime_Profile.png/revision/latest?cb=20210508065050', description: 'Symbole de la paix', anime: 'My Hero Academia'},
+                {name: 'Deku', rarity: 'epic', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/c/cd/Izuku_Midoriya_Anime_Profile.png/revision/latest?cb=20210508065052', description: 'Héros successeur', anime: 'My Hero Academia'},
+                {name: 'Endeavor', rarity: 'epic', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/c/c0/Enji_Todoroki_Anime_Profile.png/revision/latest?cb=20210508065053', description: 'Héros n°1', anime: 'My Hero Academia'},
+                {name: 'Hawks', rarity: 'epic', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/c/c6/Keigo_Takami_Anime_Profile.png/revision/latest?cb=20210508065054', description: 'Héros ailé', anime: 'My Hero Academia'},
+            ],
+            legendary: [
+                {name: 'Naruto Hokage', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_newshot.png/revision/latest?cb=20170621192615', description: 'Septième Hokage', anime: 'Naruto'},
+                {name: 'Madara', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/naruto/images/9/98/Madara_Uchiha.png/revision/latest?cb=20160115140430', description: 'Légende Uchiha', anime: 'Naruto'},
+                {name: 'Hashirama', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/naruto/images/7/7e/Hashirama_Senju.png/revision/latest?cb=20160115141424', description: 'Dieu des shinobi', anime: 'Naruto'},
+                {name: 'Obito Juubi', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/naruto/images/a/a6/Obito_Jinch%C5%ABriki.png/revision/latest?cb=20150103024636', description: 'Jinchūriki à dix queues', anime: 'Naruto'},
+                {name: 'Muzan Kibutsuji', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/4/48/Muzan_anime_design.png/revision/latest?cb=20190802043537', description: 'Roi des démons', anime: 'Demon Slayer'},
+                {name: 'Yoriichi', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/9/96/Yoriichi_Tsugikuni_Anime.png/revision/latest?cb=20211115004340', description: 'Premier utilisateur', anime: 'Demon Slayer'},
+                {name: 'Kokushibo', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/1/19/Kokushibo_anime_design.png/revision/latest?cb=20211115004342', description: 'Lune supérieure 1', anime: 'Demon Slayer'},
+                {name: 'Tanjiro Final', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/e/e9/Tanjiro_Kamado_%28Demon%29_Anime.png/revision/latest?cb=20220101004653', description: 'Roi démon', anime: 'Demon Slayer'},
+                {name: 'Kaido', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/onepiece/images/3/3f/Kaidou_Anime_Infobox.png/revision/latest?cb=20200429191701', description: 'Plus forte créature', anime: 'One Piece'},
+                {name: 'Shanks', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/onepiece/images/4/45/Shanks_Anime_Infobox.png/revision/latest?cb=20200429191630', description: 'Empereur roux', anime: 'One Piece'},
+                {name: 'Barbe Blanche', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/onepiece/images/6/65/Edward_Newgate_Anime_Infobox.png/revision/latest?cb=20200429191705', description: 'Plus fort homme', anime: 'One Piece'},
+                {name: 'Luffy Gear 5', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/onepiece/images/7/73/Monkey_D._Luffy_Gear_5.png/revision/latest?cb=20220830194857', description: 'Nika libération', anime: 'One Piece'},
+                {name: 'Eren Titan', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/3/34/Eren_Yeager_%28Anime%29_character_image_%28Attack_Titan%29.png/revision/latest?cb=20210117143408', description: 'Titan fondateur', anime: 'Attack on Titan'},
+                {name: 'Ymir Fritz', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/shingekinokyojin/images/4/4f/Ymir_Fritz_%28Anime%29_character_image_%28Original_Titan%29.png/revision/latest?cb=20210117143408', description: 'Première titane', anime: 'Attack on Titan'},
+                {name: 'Goku Ultra', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/dragonball/images/4/4c/SDBH_Artwork.png/revision/latest?cb=20200306013141', description: 'Ultra Instinct', anime: 'Dragon Ball'},
+                {name: 'Beerus', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/dragonball/images/8/8e/BeerusToei.png/revision/latest?cb=20160322105113', description: 'Dieu de la destruction', anime: 'Dragon Ball'},
+                {name: 'Whis', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/dragonball/images/d/d3/WhisToei.png/revision/latest?cb=20160322105118', description: 'Ange divin', anime: 'Dragon Ball'},
+                {name: 'Vegeta Ultra', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/dragonball/images/8/8f/Vegeta_Ultra_Ego.png/revision/latest?cb=20211021160936', description: 'Ultra Ego', anime: 'Dragon Ball'},
+                {name: 'All For One', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/0/06/All_For_One_Anime_Profile.png/revision/latest?cb=20210508065050', description: 'Roi des méchants', anime: 'My Hero Academia'},
+                {name: 'Shigaraki', rarity: 'legendary', img: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/c/c4/Tomura_Shigaraki_Anime_Profile.png/revision/latest?cb=20210508065059', description: 'Successeur maléfique', anime: 'My Hero Academia'},
+            ]
+        };
                 {name: 'Sasuke', rarity: 'rare', img: 'https://i.imgur.com/5U6V7W8.jpg', description: 'Vengeur Uchiha', anime: 'Naruto'},
                 {name: 'Gaara', rarity: 'rare', img: 'https://i.imgur.com/6V7W8X9.jpg', description: 'Kazekage du sable', anime: 'Naruto'},
                 {name: 'Rock Lee', rarity: 'rare', img: 'https://i.imgur.com/7W8X9Y0.jpg', description: 'Maître du taijutsu', anime: 'Naruto'},
@@ -899,20 +1027,32 @@
 
         function openPack(type) {
             const costs = {basic: 50, rare: 150, epic: 350, legendary: 800};
+            const icons = {basic: '📦', rare: '⭐', epic: '🎁', legendary: '💎'};
+            
             if (credits < costs[type]) {
                 return showToast('Pas assez de crédits !', 'error');
             }
 
             credits -= costs[type];
             users[currentUser.email].credits = credits;
-            
-            const cards = generateCards(type);
-            inventory.push(...cards);
-            users[currentUser.email].inventory = inventory;
-            localStorage.setItem('users', JSON.stringify(users));
-
-            displayCards(cards);
             updateCredits();
+            
+            // Afficher l'animation d'ouverture
+            const packOpening = document.getElementById('packOpening');
+            const packIcon = document.getElementById('packOpeningIcon');
+            packIcon.textContent = icons[type];
+            packOpening.classList.add('active');
+            
+            // Générer les cartes après 2.5 secondes
+            setTimeout(() => {
+                const cards = generateCards(type);
+                inventory.push(...cards);
+                users[currentUser.email].inventory = inventory;
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                packOpening.classList.remove('active');
+                displayCards(cards);
+            }, 2500);
         }
 
         function generateCards(type) {
