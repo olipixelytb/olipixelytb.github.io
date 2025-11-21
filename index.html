@@ -202,6 +202,7 @@
             object-fit: cover;
             border-radius: 10px;
             margin: 10px 0;
+            background: #2a2a3e;
         }
         .inventory-grid {
             display: grid;
@@ -222,6 +223,7 @@
             object-fit: cover;
             border-radius: 10px;
             margin: 10px 0;
+            background: #2a2a3e;
         }
         .inventory-item-name { font-weight: bold; font-size: 1.2em; margin: 10px 0; }
         .inventory-item-count {
@@ -275,10 +277,11 @@
             color: #333;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
+        .card.basic { background: linear-gradient(145deg, #e0e0e0, #c0c0c0); }
         .card.rare { background: linear-gradient(145deg, #ff6b6b, #ee5a6f); color: white; border: 3px solid gold; }
         .card.epic { background: linear-gradient(145deg, #a855f7, #6366f1); color: white; border: 3px solid #fbbf24; }
         .card.legendary { background: linear-gradient(145deg, #f59e0b, #d97706); color: white; border: 3px solid #ffd700; }
-        .card-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin: 10px 0; }
+        .card-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin: 10px 0; background: #2a2a3e; }
         .card-name { font-size: 1.4em; font-weight: bold; margin: 10px 0; }
         .btn { padding: 15px 40px; font-size: 1.1em; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; color: white; margin: 10px; }
         .btn-primary { background: linear-gradient(145deg, #10b981, #059669); }
@@ -437,22 +440,29 @@
                     <div class="pack" onclick="openPack('basic')">
                         <div class="pack-icon">📦</div>
                         <div class="pack-name">Pack Basique</div>
-                        <p style="opacity: 0.8;">3 cartes aléatoires</p>
-                        <div class="pack-price">💰 100 Crédits</div>
+                        <p style="opacity: 0.8;">1 carte commune</p>
+                        <div class="pack-price">💰 50 Crédits</div>
                         <button class="pack-btn">Ouvrir</button>
                     </div>
-                    <div class="pack" onclick="openPack('premium')">
+                    <div class="pack" onclick="openPack('rare')">
+                        <div class="pack-icon">⭐</div>
+                        <div class="pack-name">Pack Rare</div>
+                        <p style="opacity: 0.8;">1 carte rare garantie</p>
+                        <div class="pack-price">💰 150 Crédits</div>
+                        <button class="pack-btn">Ouvrir</button>
+                    </div>
+                    <div class="pack" onclick="openPack('epic')">
                         <div class="pack-icon">🎁</div>
-                        <div class="pack-name">Pack Premium</div>
-                        <p style="opacity: 0.8;">4 cartes + bonus rareté</p>
-                        <div class="pack-price">💰 250 Crédits</div>
+                        <div class="pack-name">Pack Épique</div>
+                        <p style="opacity: 0.8;">1 carte épique garantie</p>
+                        <div class="pack-price">💰 350 Crédits</div>
                         <button class="pack-btn">Ouvrir</button>
                     </div>
                     <div class="pack" onclick="openPack('legendary')">
                         <div class="pack-icon">💎</div>
                         <div class="pack-name">Pack Légendaire</div>
-                        <p style="opacity: 0.8;">5 cartes + garantie épique</p>
-                        <div class="pack-price">💰 500 Crédits</div>
+                        <p style="opacity: 0.8;">1 carte légendaire garantie</p>
+                        <div class="pack-price">💰 800 Crédits</div>
                         <button class="pack-btn">Ouvrir</button>
                     </div>
                 </div>
@@ -462,12 +472,20 @@
                 <h2 class="section-title">🎴 Ma Collection</h2>
                 <div class="collection-filters">
                     <button class="filter-btn active" onclick="filterCollection('all')">Toutes</button>
-                    <button class="filter-btn" onclick="filterCollection('common')">Communes</button>
+                    <button class="filter-btn" onclick="filterCollection('basic')">Communes</button>
                     <button class="filter-btn" onclick="filterCollection('rare')">Rares</button>
                     <button class="filter-btn" onclick="filterCollection('epic')">Épiques</button>
                     <button class="filter-btn" onclick="filterCollection('legendary')">Légendaires</button>
                     <button class="filter-btn" onclick="filterCollection('owned')">Possédées</button>
                     <button class="filter-btn" onclick="filterCollection('missing')">Manquantes</button>
+                </div>
+                <div class="collection-filters" style="margin-top: 10px;">
+                    <button class="filter-btn" onclick="filterCollection('Naruto')">🍥 Naruto</button>
+                    <button class="filter-btn" onclick="filterCollection('Demon Slayer')">⚔️ Demon Slayer</button>
+                    <button class="filter-btn" onclick="filterCollection('One Piece')">🏴‍☠️ One Piece</button>
+                    <button class="filter-btn" onclick="filterCollection('Attack on Titan')">🗡️ Attack on Titan</button>
+                    <button class="filter-btn" onclick="filterCollection('Dragon Ball')">🐉 Dragon Ball</button>
+                    <button class="filter-btn" onclick="filterCollection('My Hero Academia')">💥 My Hero Academia</button>
                 </div>
                 <div class="collection-grid" id="collectionGrid"></div>
             </section>
@@ -500,7 +518,7 @@
             </section>
 
             <div class="cards-reveal" id="cardsReveal">
-                <h2 class="section-title">🎉 Nouvelles Cartes !</h2>
+                <h2 class="section-title">🎉 Nouvelle Carte !</h2>
                 <div class="cards-grid" id="cardsGrid"></div>
                 <div style="text-align: center;">
                     <button class="btn btn-primary" onclick="showPacks()">Nouveau Pack</button>
@@ -510,6 +528,15 @@
 
             <section id="inventorySection" style="display: none;">
                 <h2 class="section-title">📋 Mon Inventaire</h2>
+                <div class="collection-filters" style="margin-bottom: 20px;">
+                    <button class="filter-btn active" onclick="filterInventory('all')">Toutes</button>
+                    <button class="filter-btn" onclick="filterInventory('Naruto')">🍥 Naruto</button>
+                    <button class="filter-btn" onclick="filterInventory('Demon Slayer')">⚔️ Demon Slayer</button>
+                    <button class="filter-btn" onclick="filterInventory('One Piece')">🏴‍☠️ One Piece</button>
+                    <button class="filter-btn" onclick="filterInventory('Attack on Titan')">🗡️ Attack on Titan</button>
+                    <button class="filter-btn" onclick="filterInventory('Dragon Ball')">🐉 Dragon Ball</button>
+                    <button class="filter-btn" onclick="filterInventory('My Hero Academia')">💥 My Hero Academia</button>
+                </div>
                 <div class="inventory-grid" id="inventoryGrid"></div>
             </section>
 
@@ -555,53 +582,117 @@
         let credits = 1000;
         let inventory = [];
         let currentFilter = 'all';
+        let currentInventoryFilter = 'all';
 
         const cardDatabase = {
             basic: [
-                {name: 'Konohamaru', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/7/284129.jpg', description: 'Ninja en formation', anime: 'Naruto'},
-                {name: 'Tanjiro', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/2/504211.jpg', description: 'Pourfendeur de démons', anime: 'Demon Slayer'},
-                {name: 'Usopp', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/11/289453.jpg', description: 'Tireur d\'élite', anime: 'One Piece'},
-                {name: 'Conny', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/6/395613.jpg', description: 'Enfant courageux', anime: 'Attack on Titan'},
-                {name: 'Krillin', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/9/378787.jpg', description: 'Meilleur ami', anime: 'Dragon Ball'},
-                {name: 'Sakura', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/9/69275.jpg', description: 'Kunoichi médecin', anime: 'Naruto'},
-                {name: 'Nezuko', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/3/407127.jpg', description: 'Démon protectrice', anime: 'Demon Slayer'},
-                {name: 'Nami', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/8/310309.jpg', description: 'Navigatrice', anime: 'One Piece'},
-                {name: 'Armin', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/8/220267.jpg', description: 'Stratège brillant', anime: 'Attack on Titan'},
-                {name: 'Gohan', rarity: 'common', img: 'https://cdn.myanimelist.net/images/characters/4/378788.jpg', description: 'Demi-Saiyan', anime: 'Dragon Ball'},
+                {name: 'Konohamaru', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/0/03/Konohamaru_Parte_III.png', description: 'Ninja en formation', anime: 'Naruto'},
+                {name: 'Sakura', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/2/27/Sakura_Part_III.png', description: 'Kunoichi médecin', anime: 'Naruto'},
+                {name: 'Hinata', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/c/c3/Hinata_Part_III.png', description: 'Héritière Hyuga', anime: 'Naruto'},
+                {name: 'Shikamaru', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/a/a8/Shikamaru_Part_III.png', description: 'Stratège paresseux', anime: 'Naruto'},
+                {name: 'Choji', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/8/87/Ch%C5%8Dji_Part_III.png', description: 'Ninja gourmand', anime: 'Naruto'},
+                {name: 'Ino', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/5/54/Ino_Part_III.png', description: 'Spécialiste du mental', anime: 'Naruto'},
+                {name: 'Kiba', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/e/e3/Kiba_Part_III.png', description: 'Dresseur de chiens', anime: 'Naruto'},
+                {name: 'Tenten', rarity: 'basic', img: 'https://static.wikia.nocookie.net/naruto/images/d/d4/Tenten_Part_III.png', description: 'Maître des armes', anime: 'Naruto'},
+                {name: 'Tanjiro', rarity: 'basic', img: 'https://i.imgur.com/2X3Z4Y5.jpg', description: 'Pourfendeur de démons', anime: 'Demon Slayer'},
+                {name: 'Nezuko', rarity: 'basic', img: 'https://i.imgur.com/3Y4Z5A6.jpg', description: 'Démon protectrice', anime: 'Demon Slayer'},
+                {name: 'Murata', rarity: 'basic', img: 'https://i.imgur.com/4Z5A6B7.jpg', description: 'Pourfendeur ordinaire', anime: 'Demon Slayer'},
+                {name: 'Goto', rarity: 'basic', img: 'https://i.imgur.com/5A6B7C8.jpg', description: 'Assistant dévoué', anime: 'Demon Slayer'},
+                {name: 'Usopp', rarity: 'basic', img: 'https://i.imgur.com/6B7C8D9.jpg', description: 'Tireur d\'élite', anime: 'One Piece'},
+                {name: 'Nami', rarity: 'basic', img: 'https://i.imgur.com/7C8D9E0.jpg', description: 'Navigatrice', anime: 'One Piece'},
+                {name: 'Chopper', rarity: 'basic', img: 'https://i.imgur.com/8D9E0F1.jpg', description: 'Médecin renne', anime: 'One Piece'},
+                {name: 'Brook', rarity: 'basic', img: 'https://i.imgur.com/9E0F1G2.jpg', description: 'Musicien squelette', anime: 'One Piece'},
+                {name: 'Carrot', rarity: 'basic', img: 'https://i.imgur.com/0F1G2H3.jpg', description: 'Guerrière Mink', anime: 'One Piece'},
+                {name: 'Conny', rarity: 'basic', img: 'https://i.imgur.com/1G2H3I4.jpg', description: 'Enfant courageux', anime: 'Attack on Titan'},
+                {name: 'Armin', rarity: 'basic', img: 'https://i.imgur.com/2H3I4J5.jpg', description: 'Stratège brillant', anime: 'Attack on Titan'},
+                {name: 'Sasha', rarity: 'basic', img: 'https://i.imgur.com/3I4J5K6.jpg', description: 'Chasseuse affamée', anime: 'Attack on Titan'},
+                {name: 'Historia', rarity: 'basic', img: 'https://i.imgur.com/4J5K6L7.jpg', description: 'Reine courageuse', anime: 'Attack on Titan'},
+                {name: 'Krillin', rarity: 'basic', img: 'https://i.imgur.com/5K6L7M8.jpg', description: 'Meilleur ami', anime: 'Dragon Ball'},
+                {name: 'Gohan', rarity: 'basic', img: 'https://i.imgur.com/6L7M8N9.jpg', description: 'Demi-Saiyan', anime: 'Dragon Ball'},
+                {name: 'Yamcha', rarity: 'basic', img: 'https://i.imgur.com/7M8N9O0.jpg', description: 'Guerrier du désert', anime: 'Dragon Ball'},
+                {name: 'Tenshinhan', rarity: 'basic', img: 'https://i.imgur.com/8N9O0P1.jpg', description: 'Maître du Kikoho', anime: 'Dragon Ball'},
+                {name: 'Bulma', rarity: 'basic', img: 'https://i.imgur.com/9O0P1Q2.jpg', description: 'Génie scientifique', anime: 'Dragon Ball'},
+                {name: 'Denki', rarity: 'basic', img: 'https://i.imgur.com/0P1Q2R3.jpg', description: 'Héros électrique', anime: 'My Hero Academia'},
+                {name: 'Mina', rarity: 'basic', img: 'https://i.imgur.com/1Q2R3S4.jpg', description: 'Héroïne acide', anime: 'My Hero Academia'},
+                {name: 'Mineta', rarity: 'basic', img: 'https://i.imgur.com/2R3S4T5.jpg', description: 'Petit pervers', anime: 'My Hero Academia'},
+                {name: 'Sero', rarity: 'basic', img: 'https://i.imgur.com/3S4T5U6.jpg', description: 'Héros ruban', anime: 'My Hero Academia'},
             ],
             rare: [
-                {name: 'Kakashi', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/7/284121.jpg', description: 'Ninja copieur', anime: 'Naruto'},
-                {name: 'Zenitsu', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/10/504215.jpg', description: 'Maître de la foudre', anime: 'Demon Slayer'},
-                {name: 'Zoro', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/3/100534.jpg', description: 'Trois sabres', anime: 'One Piece'},
-                {name: 'Mikasa', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/9/215563.jpg', description: 'Soldat d\'élite', anime: 'Attack on Titan'},
-                {name: 'Piccolo', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/10/52721.jpg', description: 'Guerrier Namek', anime: 'Dragon Ball'},
-                {name: 'Sasuke', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/9/131317.jpg', description: 'Vengeur Uchiha', anime: 'Naruto'},
-                {name: 'Inosuke', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/12/504216.jpg', description: 'Sanglier sauvage', anime: 'Demon Slayer'},
-                {name: 'Sanji', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/4/310305.jpg', description: 'Cuisinier élégant', anime: 'One Piece'},
-                {name: 'Jean', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/5/241619.jpg', description: 'Chef d\'escouade', anime: 'Attack on Titan'},
-                {name: 'Trunks', rarity: 'rare', img: 'https://cdn.myanimelist.net/images/characters/7/226535.jpg', description: 'Voyageur du futur', anime: 'Dragon Ball'},
+                {name: 'Kakashi', rarity: 'rare', img: 'https://i.imgur.com/4T5U6V7.jpg', description: 'Ninja copieur', anime: 'Naruto'},
+                {name: 'Sasuke', rarity: 'rare', img: 'https://i.imgur.com/5U6V7W8.jpg', description: 'Vengeur Uchiha', anime: 'Naruto'},
+                {name: 'Gaara', rarity: 'rare', img: 'https://i.imgur.com/6V7W8X9.jpg', description: 'Kazekage du sable', anime: 'Naruto'},
+                {name: 'Rock Lee', rarity: 'rare', img: 'https://i.imgur.com/7W8X9Y0.jpg', description: 'Maître du taijutsu', anime: 'Naruto'},
+                {name: 'Neji', rarity: 'rare', img: 'https://i.imgur.com/8X9Y0Z1.jpg', description: 'Génie Hyuga', anime: 'Naruto'},
+                {name: 'Tsunade', rarity: 'rare', img: 'https://i.imgur.com/9Y0Z1A2.jpg', description: 'Cinquième Hokage', anime: 'Naruto'},
+                {name: 'Zenitsu', rarity: 'rare', img: 'https://i.imgur.com/0Z1A2B3.jpg', description: 'Maître de la foudre', anime: 'Demon Slayer'},
+                {name: 'Inosuke', rarity: 'rare', img: 'https://i.imgur.com/1A2B3C4.jpg', description: 'Sanglier sauvage', anime: 'Demon Slayer'},
+                {name: 'Kanao', rarity: 'rare', img: 'https://i.imgur.com/2B3C4D5.jpg', description: 'Apprentie silencieuse', anime: 'Demon Slayer'},
+                {name: 'Shinobu', rarity: 'rare', img: 'https://i.imgur.com/3C4D5E6.jpg', description: 'Pilier de l\'insecte', anime: 'Demon Slayer'},
+                {name: 'Zoro', rarity: 'rare', img: 'https://i.imgur.com/4D5E6F7.jpg', description: 'Trois sabres', anime: 'One Piece'},
+                {name: 'Sanji', rarity: 'rare', img: 'https://i.imgur.com/5E6F7G8.jpg', description: 'Cuisinier élégant', anime: 'One Piece'},
+                {name: 'Franky', rarity: 'rare', img: 'https://i.imgur.com/6F7G8H9.jpg', description: 'Charpentier cyborg', anime: 'One Piece'},
+                {name: 'Robin', rarity: 'rare', img: 'https://i.imgur.com/7G8H9I0.jpg', description: 'Archéologue mystérieuse', anime: 'One Piece'},
+                {name: 'Jinbe', rarity: 'rare', img: 'https://i.imgur.com/8H9I0J1.jpg', description: 'Maître du karaté', anime: 'One Piece'},
+                {name: 'Mikasa', rarity: 'rare', img: 'https://i.imgur.com/9I0J1K2.jpg', description: 'Soldat d\'élite', anime: 'Attack on Titan'},
+                {name: 'Jean', rarity: 'rare', img: 'https://i.imgur.com/0J1K2L3.jpg', description: 'Chef d\'escouade', anime: 'Attack on Titan'},
+                {name: 'Reiner', rarity: 'rare', img: 'https://i.imgur.com/1K2L3M4.jpg', description: 'Titan cuirassé', anime: 'Attack on Titan'},
+                {name: 'Annie', rarity: 'rare', img: 'https://i.imgur.com/2L3M4N5.jpg', description: 'Titan féminin', anime: 'Attack on Titan'},
+                {name: 'Piccolo', rarity: 'rare', img: 'https://i.imgur.com/3M4N5O6.jpg', description: 'Guerrier Namek', anime: 'Dragon Ball'},
+                {name: 'Trunks', rarity: 'rare', img: 'https://i.imgur.com/4N5O6P7.jpg', description: 'Voyageur du futur', anime: 'Dragon Ball'},
+                {name: 'Android 18', rarity: 'rare', img: 'https://i.imgur.com/5O6P7Q8.jpg', description: 'Cyborg puissante', anime: 'Dragon Ball'},
+                {name: 'Majin Buu', rarity: 'rare', img: 'https://i.imgur.com/6P7Q8R9.jpg', description: 'Créature magique', anime: 'Dragon Ball'},
+                {name: 'Todoroki', rarity: 'rare', img: 'https://i.imgur.com/7Q8R9S0.jpg', description: 'Feu et glace', anime: 'My Hero Academia'},
+                {name: 'Bakugo', rarity: 'rare', img: 'https://i.imgur.com/8R9S0T1.jpg', description: 'Explosif intense', anime: 'My Hero Academia'},
+                {name: 'Ochaco', rarity: 'rare', img: 'https://i.imgur.com/9S0T1U2.jpg', description: 'Héroïne gravité', anime: 'My Hero Academia'},
+                {name: 'Iida', rarity: 'rare', img: 'https://i.imgur.com/0T1U2V3.jpg', description: 'Héros rapide', anime: 'My Hero Academia'},
             ],
             epic: [
-                {name: 'Itachi', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/9/131347.jpg', description: 'Génie Uchiha', anime: 'Naruto'},
-                {name: 'Giyu', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/2/378254.jpg', description: 'Pilier de l\'eau', anime: 'Demon Slayer'},
-                {name: 'Luffy', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/9/310307.jpg', description: 'Futur roi des pirates', anime: 'One Piece'},
-                {name: 'Levi', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/2/241413.jpg', description: 'Plus fort humain', anime: 'Attack on Titan'},
-                {name: 'Vegeta', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/7/246015.jpg', description: 'Prince des Saiyans', anime: 'Dragon Ball'},
-                {name: 'Jiraiya', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/6/284120.jpg', description: 'Ermite légendaire', anime: 'Naruto'},
-                {name: 'Rengoku', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/13/378252.jpg', description: 'Pilier de la flamme', anime: 'Demon Slayer'},
-                {name: 'Ace', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/5/262641.jpg', description: 'Poing ardent', anime: 'One Piece'},
-                {name: 'Erwin', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/9/215561.jpg', description: 'Commandant visionnaire', anime: 'Attack on Titan'},
-                {name: 'Broly', rarity: 'epic', img: 'https://cdn.myanimelist.net/images/characters/8/333366.jpg', description: 'Saiyan légendaire', anime: 'Dragon Ball'},
+                {name: 'Itachi', rarity: 'epic', img: 'https://i.imgur.com/1U2V3W4.jpg', description: 'Génie Uchiha', anime: 'Naruto'},
+                {name: 'Jiraiya', rarity: 'epic', img: 'https://i.imgur.com/2V3W4X5.jpg', description: 'Ermite légendaire', anime: 'Naruto'},
+                {name: 'Minato', rarity: 'epic', img: 'https://i.imgur.com/3W4X5Y6.jpg', description: 'Éclair jaune', anime: 'Naruto'},
+                {name: 'Orochimaru', rarity: 'epic', img: 'https://i.imgur.com/4X5Y6Z7.jpg', description: 'Serpent légendaire', anime: 'Naruto'},
+                {name: 'Giyu', rarity: 'epic', img: 'https://i.imgur.com/5Y6Z7A8.jpg', description: 'Pilier de l\'eau', anime: 'Demon Slayer'},
+                {name: 'Rengoku', rarity: 'epic', img: 'https://i.imgur.com/6Z7A8B9.jpg', description: 'Pilier de la flamme', anime: 'Demon Slayer'},
+                {name: 'Tengen', rarity: 'epic', img: 'https://i.imgur.com/7A8B9C0.jpg', description: 'Pilier du son', anime: 'Demon Slayer'},
+                {name: 'Akaza', rarity: 'epic', img: 'https://i.imgur.com/8B9C0D1.jpg', description: 'Lune supérieure', anime: 'Demon Slayer'},
+                {name: 'Luffy', rarity: 'epic', img: 'https://i.imgur.com/9C0D1E2.jpg', description: 'Futur roi des pirates', anime: 'One Piece'},
+                {name: 'Ace', rarity: 'epic', img: 'https://i.imgur.com/0D1E2F3.jpg', description: 'Poing ardent', anime: 'One Piece'},
+                {name: 'Law', rarity: 'epic', img: 'https://i.imgur.com/1E2F3G4.jpg', description: 'Chirurgien de la mort', anime: 'One Piece'},
+                {name: 'Sabo', rarity: 'epic', img: 'https://i.imgur.com/2F3G4H5.jpg', description: 'Chef d\'état-major', anime: 'One Piece'},
+                {name: 'Levi', rarity: 'epic', img: 'https://i.imgur.com/3G4H5I6.jpg', description: 'Plus fort humain', anime: 'Attack on Titan'},
+                {name: 'Erwin', rarity: 'epic', img: 'https://i.imgur.com/4H5I6J7.jpg', description: 'Commandant visionnaire', anime: 'Attack on Titan'},
+                {name: 'Zeke', rarity: 'epic', img: 'https://i.imgur.com/5I6J7K8.jpg', description: 'Titan bestial', anime: 'Attack on Titan'},
+                {name: 'Kenny', rarity: 'epic', img: 'https://i.imgur.com/6J7K8L9.jpg', description: 'L\'éventreur', anime: 'Attack on Titan'},
+                {name: 'Vegeta', rarity: 'epic', img: 'https://i.imgur.com/7K8L9M0.jpg', description: 'Prince des Saiyans', anime: 'Dragon Ball'},
+                {name: 'Broly', rarity: 'epic', img: 'https://i.imgur.com/8L9M0N1.jpg', description: 'Saiyan légendaire', anime: 'Dragon Ball'},
+                {name: 'Frieza', rarity: 'epic', img: 'https://i.imgur.com/9M0N1O2.jpg', description: 'Empereur galactique', anime: 'Dragon Ball'},
+                {name: 'Cell', rarity: 'epic', img: 'https://i.imgur.com/0N1O2P3.jpg', description: 'Forme parfaite', anime: 'Dragon Ball'},
+                {name: 'All Might', rarity: 'epic', img: 'https://i.imgur.com/1O2P3Q4.jpg', description: 'Symbole de la paix', anime: 'My Hero Academia'},
+                {name: 'Deku', rarity: 'epic', img: 'https://i.imgur.com/2P3Q4R5.jpg', description: 'Héros successeur', anime: 'My Hero Academia'},
+                {name: 'Endeavor', rarity: 'epic', img: 'https://i.imgur.com/3Q4R5S6.jpg', description: 'Héros n°1', anime: 'My Hero Academia'},
+                {name: 'Hawks', rarity: 'epic', img: 'https://i.imgur.com/4R5S6T7.jpg', description: 'Héros ailé', anime: 'My Hero Academia'},
             ],
             legendary: [
-                {name: 'Naruto Hokage', rarity: 'legendary', img: 'https://cdn.myanimelist.net/images/characters/5/517834.jpg', description: 'Septième Hokage', anime: 'Naruto'},
-                {name: 'Muzan Kibutsuji', rarity: 'legendary', img: 'https://cdn.myanimelist.net/images/characters/7/378255.jpg', description: 'Roi des démons', anime: 'Demon Slayer'},
-                {name: 'Kaido', rarity: 'legendary', img: 'https://cdn.myanimelist.net/images/characters/6/421566.jpg', description: 'Plus forte créature', anime: 'One Piece'},
-                {name: 'Eren Titan', rarity: 'legendary', img: 'https://cdn.myanimelist.net/images/characters/10/216895.jpg', description: 'Titan fondateur', anime: 'Attack on Titan'},
-                {name: 'Goku Ultra', rarity: 'legendary', img: 'https://cdn.myanimelist.net/images/characters/7/284129.jpg', description: 'Ultra Instinct', anime: 'Dragon Ball'},
-                {name: 'Madara', rarity: 'legendary', img: 'https://cdn.myanimelist.net/images/characters/10/303479.jpg', description: 'Légende Uchiha', anime: 'Naruto'},
-                {name: 'Yoriichi', rarity: 'legendary', img: 'https://cdn.myanimelist.net/images/characters/12/421569.jpg', description: 'Premier utilisateur', anime: 'Demon Slayer'},
-                {name: 'Shanks', rarity: 'legendary', img: 'https://cdn.myanimelist.net/images/characters/5/262642.jpg', description: 'Empereur roux', anime: 'One Piece'},
+                {name: 'Naruto Hokage', rarity: 'legendary', img: 'https://i.imgur.com/5S6T7U8.jpg', description: 'Septième Hokage', anime: 'Naruto'},
+                {name: 'Madara', rarity: 'legendary', img: 'https://i.imgur.com/6T7U8V9.jpg', description: 'Légende Uchiha', anime: 'Naruto'},
+                {name: 'Hashirama', rarity: 'legendary', img: 'https://i.imgur.com/7U8V9W0.jpg', description: 'Dieu des shinobi', anime: 'Naruto'},
+                {name: 'Obito Juubi', rarity: 'legendary', img: 'https://i.imgur.com/8V9W0X1.jpg', description: 'Jinchūriki à dix queues', anime: 'Naruto'},
+                {name: 'Muzan Kibutsuji', rarity: 'legendary', img: 'https://i.imgur.com/9W0X1Y2.jpg', description: 'Roi des démons', anime: 'Demon Slayer'},
+                {name: 'Yoriichi', rarity: 'legendary', img: 'https://i.imgur.com/0X1Y2Z3.jpg', description: 'Premier utilisateur', anime: 'Demon Slayer'},
+                {name: 'Kokushibo', rarity: 'legendary', img: 'https://i.imgur.com/1Y2Z3A4.jpg', description: 'Lune supérieure 1', anime: 'Demon Slayer'},
+                {name: 'Tanjiro Final', rarity: 'legendary', img: 'https://i.imgur.com/2Z3A4B5.jpg', description: 'Roi démon', anime: 'Demon Slayer'},
+                {name: 'Kaido', rarity: 'legendary', img: 'https://i.imgur.com/3A4B5C6.jpg', description: 'Plus forte créature', anime: 'One Piece'},
+                {name: 'Shanks', rarity: 'legendary', img: 'https://i.imgur.com/4B5C6D7.jpg', description: 'Empereur roux', anime: 'One Piece'},
+                {name: 'Barbe Blanche', rarity: 'legendary', img: 'https://i.imgur.com/5C6D7E8.jpg', description: 'Plus fort homme', anime: 'One Piece'},
+                {name: 'Luffy Gear 5', rarity: 'legendary', img: 'https://i.imgur.com/6D7E8F9.jpg', description: 'Nika libération', anime: 'One Piece'},
+                {name: 'Eren Titan', rarity: 'legendary', img: 'https://i.imgur.com/7E8F9G0.jpg', description: 'Titan fondateur', anime: 'Attack on Titan'},
+                {name: 'Ymir Fritz', rarity: 'legendary', img: 'https://i.imgur.com/8F9G0H1.jpg', description: 'Première titane', anime: 'Attack on Titan'},
+                {name: 'Goku Ultra', rarity: 'legendary', img: 'https://i.imgur.com/9G0H1I2.jpg', description: 'Ultra Instinct', anime: 'Dragon Ball'},
+                {name: 'Beerus', rarity: 'legendary', img: 'https://i.imgur.com/0H1I2J3.jpg', description: 'Dieu de la destruction', anime: 'Dragon Ball'},
+                {name: 'Whis', rarity: 'legendary', img: 'https://i.imgur.com/1I2J3K4.jpg', description: 'Ange divin', anime: 'Dragon Ball'},
+                {name: 'Vegeta Ultra', rarity: 'legendary', img: 'https://i.imgur.com/2J3K4L5.jpg', description: 'Ultra Ego', anime: 'Dragon Ball'},
+                {name: 'All For One', rarity: 'legendary', img: 'https://i.imgur.com/3K4L5M6.jpg', description: 'Roi des méchants', anime: 'My Hero Academia'},
+                {name: 'Shigaraki', rarity: 'legendary', img: 'https://i.imgur.com/4L5M6N7.jpg', description: 'Successeur maléfique', anime: 'My Hero Academia'},
             ]
         };
 
@@ -718,33 +809,55 @@
 
         function showInventory() {
             hideAll();
+            currentInventoryFilter = 'all';
             const section = document.getElementById('inventorySection');
+            loadInventoryCards();
+            section.style.display = 'block';
+        }
+
+        function filterInventory(filter) {
+            currentInventoryFilter = filter;
+            const btns = document.querySelectorAll('#inventorySection .filter-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadInventoryCards();
+        }
+
+        function loadInventoryCards() {
             const grid = document.getElementById('inventoryGrid');
             grid.innerHTML = '';
             
             if (inventory.length === 0) {
                 grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Inventaire vide</p>';
-            } else {
-                const counts = {};
-                inventory.forEach(card => {
+                return;
+            }
+
+            const counts = {};
+            inventory.forEach(card => {
+                if (currentInventoryFilter === 'all' || card.anime === currentInventoryFilter) {
                     if (!counts[card.name]) counts[card.name] = {card, count: 0};
                     counts[card.name].count++;
-                });
+                }
+            });
 
-                Object.values(counts).forEach(({card, count}) => {
-                    const item = document.createElement('div');
-                    item.className = 'inventory-item';
-                    item.innerHTML = `
-                        <img src="${card.img}" class="inventory-item-image" alt="${card.name}">
-                        <div class="inventory-item-name">${card.name}</div>
-                        <div style="opacity: 0.8; text-transform: uppercase; font-size: 0.9em;">${card.rarity}</div>
-                        <div class="inventory-item-count">x${count}</div>
-                        <button class="btn-delete" onclick="deleteCard('${card.name}')">🗑️ Supprimer</button>
-                    `;
-                    grid.appendChild(item);
-                });
+            if (Object.keys(counts).length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Aucune carte de cet anime</p>';
+                return;
             }
-            section.style.display = 'block';
+
+            Object.values(counts).forEach(({card, count}) => {
+                const item = document.createElement('div');
+                item.className = 'inventory-item';
+                item.innerHTML = `
+                    <img src="${card.img}" class="inventory-item-image" alt="${card.name}" onerror="this.src='https://via.placeholder.com/200x200/2a2a3e/4ecdc4?text=${card.name}'">
+                    <div class="inventory-item-name">${card.name}</div>
+                    <div style="opacity: 0.8; text-transform: uppercase; font-size: 0.9em;">${card.rarity}</div>
+                    <div style="color: #4ecdc4; font-size: 0.9em; margin-top: 5px;">${card.anime}</div>
+                    <div class="inventory-item-count">x${count}</div>
+                    <button class="btn-delete" onclick="deleteCard('${card.name}')">🗑️ Supprimer</button>
+                `;
+                grid.appendChild(item);
+            });
         }
 
         function showAdmin() {
@@ -772,7 +885,7 @@
                 users[currentUser.email].inventory = inventory;
                 localStorage.setItem('users', JSON.stringify(users));
                 showToast(`Carte "${name}" supprimée`);
-                showInventory();
+                loadInventoryCards();
             }
         }
 
@@ -785,7 +898,7 @@
         }
 
         function openPack(type) {
-            const costs = {basic: 100, premium: 250, legendary: 500};
+            const costs = {basic: 50, rare: 150, epic: 350, legendary: 800};
             if (credits < costs[type]) {
                 return showToast('Pas assez de crédits !', 'error');
             }
@@ -803,32 +916,27 @@
         }
 
         function generateCards(type) {
-            const num = type === 'legendary' ? 5 : type === 'premium' ? 4 : 3;
             const cards = [];
-            for (let i = 0; i < num; i++) {
-                const rarity = getRarity(type);
-                const pool = cardDatabase[rarity];
-                cards.push({...pool[Math.floor(Math.random() * pool.length)]});
-            }
-            return cards;
-        }
-
-        function getRarity(type) {
-            const r = Math.random();
+            let rarity = 'basic';
+            
             if (type === 'legendary') {
-                if (r < 0.3) return 'legendary';
-                if (r < 0.6) return 'epic';
-                if (r < 0.85) return 'rare';
-            } else if (type === 'premium') {
-                if (r < 0.1) return 'legendary';
-                if (r < 0.3) return 'epic';
-                if (r < 0.65) return 'rare';
+                rarity = 'legendary';
+            } else if (type === 'epic') {
+                rarity = 'epic';
+            } else if (type === 'rare') {
+                rarity = 'rare';
             } else {
-                if (r < 0.02) return 'legendary';
-                if (r < 0.1) return 'epic';
-                if (r < 0.35) return 'rare';
+                const r = Math.random();
+                if (r < 0.02) rarity = 'legendary';
+                else if (r < 0.08) rarity = 'epic';
+                else if (r < 0.25) rarity = 'rare';
+                else rarity = 'basic';
             }
-            return 'basic';
+            
+            const pool = cardDatabase[rarity];
+            cards.push({...pool[Math.floor(Math.random() * pool.length)]});
+            
+            return cards;
         }
 
         function displayCards(cards) {
@@ -843,9 +951,10 @@
                     el.className = `card ${card.rarity}`;
                     el.innerHTML = `
                         <div style="text-transform: uppercase; font-weight: bold; margin-bottom: 10px;">${card.rarity}</div>
-                        <img src="${card.img}" class="card-img" alt="${card.name}">
+                        <img src="${card.img}" class="card-img" alt="${card.name}" onerror="this.src='https://via.placeholder.com/200x200/2a2a3e/4ecdc4?text=${card.name}'">
                         <div class="card-name">${card.name}</div>
                         <div style="opacity: 0.9;">${card.description}</div>
+                        <div style="color: #4ecdc4; margin-top: 10px; font-weight: bold;">${card.anime}</div>
                     `;
                     grid.appendChild(el);
                 }, i * 300);
@@ -875,16 +984,21 @@
                 if (currentFilter !== 'all') {
                     if (currentFilter === 'owned' && !owned) return;
                     if (currentFilter === 'missing' && owned) return;
-                    if (currentFilter !== 'owned' && currentFilter !== 'missing' && card.rarity !== currentFilter) return;
+                    if (currentFilter !== 'owned' && currentFilter !== 'missing') {
+                        if (['basic', 'rare', 'epic', 'legendary'].includes(currentFilter)) {
+                            if (card.rarity !== currentFilter) return;
+                        } else if (card.anime !== currentFilter) return;
+                    }
                 }
                 
                 const cardEl = document.createElement('div');
                 cardEl.className = `collection-card ${owned ? 'owned' : 'locked'}`;
                 cardEl.innerHTML = `
                     <div class="card-badge">${owned ? `✓ x${count}` : '🔒'}</div>
-                    <img src="${card.img}" class="card-image" alt="${card.name}">
+                    <img src="${card.img}" class="card-image" alt="${card.name}" onerror="this.src='https://via.placeholder.com/200x200/2a2a3e/4ecdc4?text=${card.name}'">
                     <div style="font-weight: bold; font-size: 1.1em; margin: 10px 0;">${card.name}</div>
                     <div style="text-transform: uppercase; opacity: 0.8; font-size: 0.9em;">${card.rarity}</div>
+                    <div style="color: #4ecdc4; font-size: 0.85em; margin-top: 5px;">${card.anime}</div>
                     <div style="color: #4ecdc4; font-weight: bold; margin-top: 5px;">
                         ${owned ? `Possédée x${count}` : 'Non obtenue'}
                     </div>
@@ -895,13 +1009,12 @@
 
         function filterCollection(filter) {
             currentFilter = filter;
-            const btns = document.querySelectorAll('.filter-btn');
+            const btns = document.querySelectorAll('#collectionSection .filter-btn');
             btns.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             loadCollection();
         }
 
-        // FONCTIONS ADMIN
         function loadAdminData() {
             loadUserList();
             loadAdminStats();
