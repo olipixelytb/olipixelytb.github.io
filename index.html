@@ -121,6 +121,11 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 20px;
+            transition: all 0.3s;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(78, 205, 196, 0.4);
         }
         .section-title { font-size: 2.5em; margin-bottom: 30px; text-align: center; }
         .pack-container {
@@ -1088,7 +1093,7 @@
             cards.forEach((card, i) => {
                 setTimeout(() => {
                     const el = document.createElement('div');
-                    el.className = `card ${card.rarity}`;
+                    el.className = `card ${card.rarity} card-reveal-animation`;
                     el.innerHTML = `
                         <div style="text-transform: uppercase; font-weight: bold; margin-bottom: 10px;">${card.rarity}</div>
                         <img src="${card.img}" class="card-img" alt="${card.name}" onerror="this.src='https://via.placeholder.com/200x200/2a2a3e/4ecdc4?text=${card.name}'">
