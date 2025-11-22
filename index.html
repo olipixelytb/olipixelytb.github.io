@@ -50,6 +50,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            user-select: none;
         }
         .nav-menu a:hover { background: rgba(255, 255, 255, 0.1); }
         .nav-menu a.active { background: rgba(78, 205, 196, 0.2); color: #4ecdc4; }
@@ -422,14 +423,14 @@
         <div class="nav-container">
             <div class="logo">🎮 OliPixel Cards</div>
             <ul class="nav-menu">
-                <li><a class="active" onclick="showPacks()">Packs</a></li>
-                <li><a onclick="showCollection()">Collection</a></li>
-                <li><a onclick="showShop()">Boutique</a></li>
-                <li><a onclick="showInventory()">Inventaire</a></li>
-                <li id="adminMenuLink" style="display: none;"><a onclick="showAdmin()">Admin 👑</a></li>
+                <li><a onclick="showPacks(); return false;">Packs</a></li>
+                <li><a onclick="showCollection(); return false;">Collection</a></li>
+                <li><a onclick="showShop(); return false;">Boutique</a></li>
+                <li><a onclick="showInventory(); return false;">Inventaire</a></li>
+                <li id="adminMenuLink" style="display: none;"><a onclick="showAdmin(); return false;">Admin 👑</a></li>
             </ul>
             <div id="navAuth">
-                <button class="btn-submit" onclick="showLogin()" style="padding: 10px 25px;">Connexion</button>
+                <button class="btn-submit" onclick="showLogin(); return false;" style="padding: 10px 25px; width: auto;">Connexion</button>
             </div>
         </div>
     </nav>
@@ -438,19 +439,19 @@
         <div id="loginScreen" class="auth-screen">
             <div class="auth-card">
                 <h2 style="text-align: center; margin-bottom: 30px;">🎮 Connexion</h2>
-                <form onsubmit="login(event)">
+                <form onsubmit="return login(event)">
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" id="loginEmail" required>
+                        <input type="email" id="loginEmail" required autocomplete="email">
                     </div>
                     <div class="form-group">
                         <label>Mot de passe</label>
-                        <input type="password" id="loginPassword" required>
+                        <input type="password" id="loginPassword" required autocomplete="current-password">
                     </div>
                     <button type="submit" class="btn-submit">Se connecter</button>
                 </form>
                 <p style="text-align: center; margin-top: 20px;">
-                    <a onclick="showRegister()" style="color: #4ecdc4; cursor: pointer;">Créer un compte</a>
+                    <a href="#" onclick="showRegister(); return false;" style="color: #4ecdc4; cursor: pointer; text-decoration: underline;">Créer un compte</a>
                 </p>
             </div>
         </div>
@@ -458,27 +459,27 @@
         <div id="registerScreen" class="auth-screen" style="display: none;">
             <div class="auth-card">
                 <h2 style="text-align: center; margin-bottom: 30px;">✨ Inscription</h2>
-                <form onsubmit="register(event)">
+                <form onsubmit="return register(event)">
                     <div class="form-group">
                         <label>Pseudo</label>
-                        <input type="text" id="regUsername" required minlength="3">
+                        <input type="text" id="regUsername" required minlength="3" autocomplete="username">
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" id="regEmail" required>
+                        <input type="email" id="regEmail" required autocomplete="email">
                     </div>
                     <div class="form-group">
                         <label>Mot de passe</label>
-                        <input type="password" id="regPassword" required minlength="6">
+                        <input type="password" id="regPassword" required minlength="6" autocomplete="new-password">
                     </div>
                     <div class="form-group">
                         <label>Confirmer</label>
-                        <input type="password" id="regPasswordConfirm" required>
+                        <input type="password" id="regPasswordConfirm" required autocomplete="new-password">
                     </div>
                     <button type="submit" class="btn-submit">Créer mon compte</button>
                 </form>
                 <p style="text-align: center; margin-top: 20px;">
-                    <a onclick="showLogin()" style="color: #4ecdc4; cursor: pointer;">Déjà un compte</a>
+                    <a href="#" onclick="showLogin(); return false;" style="color: #4ecdc4; cursor: pointer; text-decoration: underline;">Déjà un compte ?</a>
                 </p>
             </div>
         </div>
@@ -834,14 +835,24 @@
         }
 
         window.onload = () => {
-            const saved = localStorage.getItem('users');
-            if (saved) users = JSON.parse(saved);
-            const email = sessionStorage.getItem('currentUser');
-            if (email && users[email]) {
-                currentUser = users[email];
-                credits = currentUser.credits;
-                inventory = currentUser.inventory || [];
-                showGame();
+            try {
+                const saved = localStorage.getItem('users');
+                if (saved) {
+                    users = JSON.parse(saved);
+                }
+                
+                const email = sessionStorage.getItem('currentUser');
+                if (email && users[email]) {
+                    currentUser = users[email];
+                    credits = currentUser.credits;
+                    inventory = currentUser.inventory || [];
+                    showGame();
+                } else {
+                    showLogin();
+                }
+            } catch (error) {
+                console.error('Erreur de chargement:', error);
+                showLogin();
             }
         };
 
@@ -867,30 +878,47 @@
 
         function register(e) {
             e.preventDefault();
-            const username = document.getElementById('regUsername').value;
-            const email = document.getElementById('regEmail').value;
+            const username = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
             const confirm = document.getElementById('regPasswordConfirm').value;
 
-            if (password !== confirm) return showToast('Mots de passe différents', 'error');
-            if (users[email]) return showToast('Email déjà utilisé', 'error');
+            if (password !== confirm) {
+                showToast('Mots de passe différents', 'error');
+                return false;
+            }
+            
+            if (users[email]) {
+                showToast('Email déjà utilisé', 'error');
+                return false;
+            }
 
             users[email] = {username, email, password, credits: 1000, inventory: []};
             localStorage.setItem('users', JSON.stringify(users));
-            showToast('Compte créé !');
+            showToast('Compte créé avec succès !');
+            
             setTimeout(() => {
                 document.getElementById('loginEmail').value = email;
+                document.getElementById('loginPassword').value = '';
                 showLogin();
-            }, 1000);
+            }, 1500);
+            
+            return false;
         }
 
         function login(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
+            const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
 
-            if (!users[email] || users[email].password !== password) {
-                return showToast('Email ou mot de passe incorrect', 'error');
+            if (!users[email]) {
+                showToast('Email non trouvé', 'error');
+                return false;
+            }
+            
+            if (users[email].password !== password) {
+                showToast('Mot de passe incorrect', 'error');
+                return false;
             }
 
             currentUser = users[email];
@@ -899,6 +927,8 @@
             sessionStorage.setItem('currentUser', email);
             showToast('Connexion réussie !');
             setTimeout(showGame, 500);
+            
+            return false;
         }
 
         function showGame() {
